@@ -4,60 +4,105 @@
 	<title>Pandemic Map</title>
 	<script src="libs/d3/d3.min.js" charset="utf-8"></script>
 	<script src="libs/jquery/jquery-2.1.1.min.js" charset="utf-8"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<script src="http://d3js.org/topojson.v1.min.js"></script>
 
-</head>
-<body>
+	<style>
+	body{
+	        background: #ffffff;
+	    }
 
+	#maps{
+	    float:left;
+	    position: relative;
+	}
 
-
-
-<script type="text/javascript">
-	var year = 2013 // Latest density models use densities from 2013
-	var airports = {}
-	var densities = {}
-	var migrations = {}
-
-	$(function() {
-		d3.csv("airports.dat", function(csv) {
-			for (var i = 0; i < csv.length; i++) {
-				if (!(csv[i].country in airports)) {
-					airports[csv[i].country] = []
-				}
-
-				new_aiport = {
-					"lat": csv[i].lat,
-					"lng": csv[i].lng,
-					"id": csv[i].id
-				}
-
-				airports[csv[i].country].push(new_aiport)
-			};
-			// console.log(airports);
-		});
-
-		d3.csv("densities.csv", function(csv) {
-			for (var i = 0; i < csv.length; i++) {
-				densities[csv[i]["Country Name"]] = csv[i][year]
-			};
-			// console.log(densities);
-		});
-
-		d3.csv("migration.csv", function(csv) {
-			for (var i = 0; i < csv.length; i++) {
-				out_country = csv[i]["Source"]
-				migrations[out_country] = {}
-
-				for (var key in csv[i]) {
-					migrations[out_country][key] = csv[i][key]
-				}
-			};
-			// console.log(migrations);
-		});
-	})
+	#map svg {
+	  background-color: #ffffff;
+	  border: 1px solid #404040;
+	}
 
 
+	.brush .extent {
+	  stroke: #000;
+	  fill-opacity: .125;
+	  shape-rendering: crispEdges;
+	}
 
-</script>
 
-</body>
+	.worldmap path {
+	  fill: crimson;
+	  stroke: #aaa;
+	  stroke-width: .5px;
+	}
+
+	.circle_path{
+	    fill: #eeeeee;
+	}
+
+	.stroke_path{
+	    stroke: #333333;
+	}
+
+	</style>
+
+
+    <body>
+        <div id="container">
+            <div id="dashboard">
+                <div id="maps">
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+        var year = 2013 // Latest density models use densities from 2013
+        var airports = {}
+        var densities = {}
+        var migrations = {}
+
+        $(function() {
+        	d3.csv("data/airports.dat", function(csv) {
+        		for (var i = 0; i < csv.length; i++) {
+        			if (!(csv[i].country in airports)) {
+        				airports[csv[i].country] = []
+        			}
+
+        			new_aiport = {
+        				"lat": csv[i].lat,
+        				"lng": csv[i].lng,
+        				"id": csv[i].id
+        			}
+
+        			airports[csv[i].country].push(new_aiport)
+        		};
+        		// console.log(airports);
+        	});
+
+        	d3.csv("data/densities.csv", function(csv) {
+        		for (var i = 0; i < csv.length; i++) {
+        			densities[csv[i]["Country Name"]] = csv[i][year]
+        		};
+        		// console.log(densities);
+        	});
+
+        	d3.csv("data/migration.csv", function(csv) {
+        		for (var i = 0; i < csv.length; i++) {
+        			out_country = csv[i]["Source"]
+        			migrations[out_country] = {}
+
+        			for (var key in csv[i]) {
+        				migrations[out_country][key] = csv[i][key]
+        			}
+        		};
+        		// console.log(migrations);
+        	});
+        })
+
+        </script>
+
+        <script type="text/javascript" src="map.js"></script>
+    </body>
 </html>
