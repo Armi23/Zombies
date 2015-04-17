@@ -657,339 +657,7 @@ var mapJson = [
 
 })(jQuery);
 
-var goPie = {
-		destroyChart: function(pieElement){
-			$(pieElement).doughnutPie('destroy');
-		},
-        initChart: function(pieElement, specs){
-				var colorPalette = specs.color;
-
-				switch(colorPalette)
-				{
-					case "YlGn":
-						var colors = [
-								{
-										name:"YlGn",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					case "YlGnBu":
-						var colors = [
-								{
-										name:"YlGnBu",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					case "GnBu":
-						var colors = [
-								{
-										name:"GnBu",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					case "BuGn":
-						var colors = [
-								{
-										name:"BuGn",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					case "PuBuGn":
-						var colors = [
-								{
-										name:"PuBuGn",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					case "PuBu":
-						var colors = [
-								{
-										name:"PuBu",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					case "BuPu":
-						var colors = [
-								{
-										name:"BuPu",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					case "RdPu":
-						var colors = [
-								{
-										name:"RdPu",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					case "PuRd":
-						var colors = [
-								{
-										name:"PuRd",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					case "OrRd":
-						var colors = [
-								{
-										name:"OrRd",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					case "YlOrRd":
-						var colors = [
-								{
-										name:"YlOrRd",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					case "YlOrBr":
-						var colors = [
-								{
-										name:"YlOrBr",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					case "Purples":
-						var colors = [
-								{
-										name:"Purples",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					case "Blues":
-						var colors = [
-								{
-										name:"Blues",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					case "Greens":
-						var colors = [
-								{
-										name:"Greens",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					case "brightOrange":
-						var colors = [
-								{
-										name:"Oranges",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					case "Reds":
-						var colors = [
-								{
-										name:"Reds",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					case "greys":
-						var colors = [
-								{
-										name:"Greys",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					case "PuOr":
-						var colors = [
-								{
-										name:"PuOr",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					case "BrBG":
-						var colors = [
-								{
-										name:"BrBG",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					case "PRGn":
-						var colors = [
-								{
-										name:"PRGn",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					case "PiYG":
-						var colors = [
-								{
-										name:"PiYG",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					case "RdBu":
-						var colors = [
-								{
-										name:"RdBu",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					case "RdGy":
-						var colors = [
-								{
-										name:"RdGy",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					case "RdYlBu":
-						var colors = [
-								{
-										name:"RdYlBu",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					case "Spectral":
-						var colors = [
-								{
-										name:"Spectral",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					case "RdYlGn":
-						var colors = [
-								{
-										name:"RdYlGn",
-										col: 8,
-										domain: ["foo", "bar", "baz", "gaz", "bar", "baz", "gaz"]
-								}
-							];
-					break;
-					default:
-						var colors = [
-								{
-										name:"Spectrum"
-								}
-							];
-				}
-				
-				var pieType = "full";
-				
-				//if inner radius is less than 10 its a mini pie type - simple small pie chart with no labels
-				if(specs.ir < 10){
-					pieType = "mini";
-				}
-
-				var dummyJson = [
-								{
-										title: "test",
-										octetTotalCount: Math.ceil(Math.random()*(100000))
-								}
-						];
-						
-                var objs = {
-                                                "data": dummyJson,
-                                                "specs": {
-                                                        "colors": colors,
-                                                        "w": specs.w,
-                                                        "h": specs.h,
-                                                        "r": specs.r,
-                                                        "ir": specs.ir,
-														"irw": specs.irw, 
-														"type": pieType
-                                                }
-                                        };
-
-                $(pieElement).doughnutPie('init', objs);
-                
-				//this.updateCharts(pieElement, dummyJson);
-        },
-        updateCharts: function(pieElement, dynamicData){
-			
-			/*
-			var dummyJson = {
-										title: "test",
-										octetTotalCount: 0
-							};
-			
-			dynamicData.push(dummyJson);*/
-		
-		
-            $(pieElement).doughnutPie('transitions', dynamicData); // Pass object "{}" to "init" as arguments
-        }
-};
-                                                                                                                                                                                                                                                                                                                                                                                                                                               
-
-
 var worldMapper = {
-	initPie: function(id, color, w, h, r, irw, ir){
-		var specs = {
-			color: color,
-			w: w,
-			h: h,
-			r: r,
-			irw: irw,
-			ir: ir
-		}
-		
-		goPie.initChart(id, specs);
-	},
-	updatePie: function(id, localPieData){
-		var newJson = new Array();							
-		$.each(localPieData, function(index, value) {
-			var localData = {
-								title: value.label,
-								octetTotalCount: value.value
-						}								
-			newJson.push(localData);
-		});
-					
-		goPie.updateCharts(id, newJson);			
-	},
 	createMiniWorldMap: function(collection){
 		var that = this;
 		
@@ -1023,7 +691,7 @@ var worldMapper = {
 		var path = d3.geo.path()
 			.projection(projection);
 
-		var svg = d3.selectAll('#minimap')
+		var svg = d3.selectAll('#majormap')
 			.append('svg')
 				.attr('width',width)
 				.attr('height',height)
@@ -1055,13 +723,6 @@ this.brush = d3.svg.brush()
 this.gBrush = svg.append("g")
     .attr("class", "brush")
     .call(this.brush);
-	
-
-/*
-this.gBrush.selectAll("rect")
-		.attr("height", 30)
-		.attr("width", 30);
-		*/
 
 
 			function brushed() {
@@ -1261,9 +922,6 @@ this.gBrush.selectAll("rect")
 						worldMapper.initPie("#detailPie", "Spectrum", 400, 400, 90, 70, 70);
 						worldMapper.updatePie("#detailPie", localPieData);
 					});
-			
-			worldMapper.initPie("#minipie"+i, "Spectrum", 25, 25, 10, 5, 0);
-			worldMapper.updatePie("#minipie"+i, that.dataCharts[i]["pieData"]);
 		}
 		
 	},
@@ -1309,7 +967,7 @@ this.gBrush.selectAll("rect")
 		that.path = d3.geo.path()
 			.projection(projection);
 
-		var svg = d3.selectAll('#majormap')
+		var svg = d3.selectAll('#major')
 			.append('svg')
 				.attr('width',width)
 				.attr('height',height)
@@ -1331,7 +989,7 @@ this.gBrush.selectAll("rect")
 
 		//d3.json("readme.json", function(collection) {
 		
-		that.initPie("#detailPie", "Spectrum", 400, 400, 90, 70, 70);
+		//that.initPie("#detailPie", "Spectrum", 400, 400, 90, 70, 70);
 			
 		that.MajorMap
 			.selectAll("path")
