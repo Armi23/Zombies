@@ -181,8 +181,9 @@ var mapJson = [
 ]}
 
 ];
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-(function($) {
+
+                                                                                                  
+    (function($) {
         var privateFunction = function() {
                 // code here
         }
@@ -307,79 +308,6 @@ var mapJson = [
 								.range(eval(colorType));					
 					}
 				},
-                createPie: function(w, h, setColors, pieCreatedCallback){
-
-					//objects to be populated
-					var lines, valueLabels, nameLabels;
-
-					//populate pie slice parameters from array data
-					this.donut = d3.layout.pie().value(function(d){
-							return d.octetTotalCount;
-					});
-
-					//create colors from an ordinal scale
-					this.invokeColor(setColors);
-					
-
-					//draw arcs, populates parameter "d" in path object
-					this.arc = d3.svg.arc()
-							.startAngle(function(d){ return d.startAngle; })
-							.endAngle(function(d){ return d.endAngle; })
-							.innerRadius(this.ir)
-							.outerRadius(this.r);
-
-					//create visuals
-					var pieId = (this.homegrownparent);
-
-					var vis = d3.select("#"+pieId).append("svg:svg")
-							.attr("width", w)
-							.attr("height", h);
-
-					//group for arcs
-					this.arc_group = vis.append("svg:g")
-							.attr("class", "arc")
-							.attr("transform", "translate(" + (w/2) + "," + (h/2) + ")");
-
-
-					//place holder circle
-					var paths = this.arc_group.append("svg:circle")
-							.attr("fill", "#eeeeee")
-							.attr("r", this.r);
-							
-					//group for text
-					var center_group = vis.append("svg:g")
-							.attr("class", "center_group")
-							.attr("transform", "translate(" + (w/2) + "," + (h/2) + ")");
-
-					//white circles behind labels
-					var whiteCircle = center_group.append("svg:circle")
-							.attr("class", "white_circle")
-							.attr("fill", "white")
-							.attr("r", this.irw);
-							
-								
-					if(this.type != "mini"){						
-						//group for labels
-						this.label_group = vis.append("svg:g")
-								.attr("class", "label_group")
-								.attr("transform", "translate(" + (w/2) + "," + (h/2) + ")");
-
-						//generate total label
-						var totalLabel = center_group.append("svg:text")
-								.attr("class", "label")
-								.attr("dy", 25)
-								.attr("text-anchor", "middle");
-
-						//total value
-						this.totalValue = center_group.append("svg:text")
-								.attr("class", "total")
-								.attr("dy", 7)
-								.attr("text-anchor", "middle")
-								.text("Waiting...");
-					}
-
-					pieCreatedCallback();
-                },
 
                 bindEvent: function(){
 					var that = this;
@@ -390,90 +318,10 @@ var mapJson = [
 
                 tweenDuration:250,
 
-                update: function(obj, options){
-					this.futurePieData = options;
-					this.newPieData = this.getNewData();
-					this.currentPieData = this.newPieData;
-					this.setMaxObj();
-					this.homegrownparent = obj.id;
-					this.totalOctets = 0;
-					this.updatePie();
-                },
-
-                filteredPieData: [],
-
                 streakerDataAdded: "",
 
                 getNewData: function(){
                     return this.futurePieData;
-                },
-
-                removePieTween: function(d, i) {
-				
-					console.log("--- removepie tween");
-				
-					var that = this;
-					s0 = 2 * Math.PI;
-					e0 = 2 * Math.PI;
-					var i = d3.interpolate({startAngle: d.startAngle, endAngle: d.endAngle}, {startAngle: s0, endAngle: e0});
-
-					return function(t) {
-							var b = i(t);
-							return methods.arc(b);
-					};
-                },
-
-                pieTween: function(d){
-					var theOldDataInPie = methods.oldPieData;
-					// Interpolate the arcs in data space
-
-					var s0;
-					var e0;
-
-					if(theOldDataInPie[i]){
-							s0 = theOldDataInPie[i].startAngle;
-							e0 = theOldDataInPie[i].endAngle;
-					} else if (!(theOldDataInPie[i]) && theOldDataInPie[i-1]) {
-							s0 = theOldDataInPie[i-1].endAngle;
-							e0 = theOldDataInPie[i-1].endAngle;
-					} else if(!(theOldDataInPie[i-1]) && theOldDataInPie.length > 0){
-							s0 = theOldDataInPie[theOldDataInPie.length-1].endAngle;
-							e0 = theOldDataInPie[theOldDataInPie.length-1].endAngle;
-					} else {
-							s0 = 0;
-							e0 = 0;
-					}
-
-					var i = d3.interpolate({startAngle: s0, endAngle: e0}, {startAngle: d.startAngle, endAngle: d.endAngle});
-
-					return function(t) {
-							var b = i(t);
-							return methods.arc(b);
-					};
-                },
-
-                textTween: function(d, i) {
-					var theOldDataInPie = methods.oldPieData;
-
-					var a;
-
-					if(theOldDataInPie[i]){
-							a = (theOldDataInPie[i].startAngle + theOldDataInPie[i].endAngle - Math.PI)/2;
-					} else if (!(theOldDataInPie[i]) && theOldDataInPie[i-1]) {
-							a = (theOldDataInPie[i-1].startAngle + theOldDataInPie[i-1].endAngle - Math.PI)/2;
-					} else if(!(theOldDataInPie[i-1]) && theOldDataInPie.length > 0) {
-							a = (theOldDataInPie[theOldDataInPie.length-1].startAngle + theOldDataInPie[theOldDataInPie.length-1].endAngle - Math.PI)/2;
-					} else {
-							a = 0;
-					}
-
-					var b = (d.startAngle + d.endAngle - Math.PI)/2;
-					var fn = d3.interpolateNumber(a, b);
-
-					return function(t) {
-							var val = fn(t);
-							return "translate(" + Math.cos(val) * (methods.r+methods.textOffset) + "," + Math.sin(val) * (methods.r+methods.textOffset) + ")";
-					};
                 },
 
                 filterData: function(element, index, array){
@@ -481,179 +329,8 @@ var mapJson = [
 					element.value = methods.streakerDataAdded[index].octetTotalCount;
 					methods.totalOctets += element.value;
 					return (element.value > 0);
-                },
-
-                updatePie: function(){
-					this.streakerDataAdded = this.newPieData;
-					this.oldPieData = this.filteredPieData;
-					this.newPieData = this.donut(this.streakerDataAdded);
-					this.filteredPieData = this.newPieData.filter(this.filterData);
-					var filteredData = this.filteredPieData;
-
-					//only update if there is valid data
-					if(filteredData.length > 0 && this.oldPieData.length > 0){
-						this.animatePie(filteredData);
-					}
-                },
-
-                animatePie: function(filteredData){
-                        var that = this;
-						
-                        //remove placeholder
-                        var pieId = (this.homegrownparent);
-                        var vis = d3.select("#"+pieId);
-
-                        vis.selectAll("circle").remove();
-
-                        var totalValue = d3.select('#'+pieId+' .total');
-                        totalValue.text(function(){
-							var maxPercentage = that.maxObj.octetTotalCount/that.totalOctets*100;
-							$('#'+pieId+' .label').text(that.maxObj.title);
-							return maxPercentage.toFixed(1)+'%';
-                        });
-																		
-                        //draw arc paths
-                        var arc_group = d3.select('#'+pieId+' .arc');
-                        paths = arc_group.selectAll("path").data(filteredData);
-                        paths.enter().append("svg:path")
-                                .attr("stroke", "white")
-                                .attr("stroke-width", 0.5)
-                                .attr("fill", function(d, i) {
-									return that.color(i); 
-								})
-                                .transition()
-                                .duration(this.tweenDuration)
-                                .attrTween("d", this.pieTween);
-                        paths
-                                .transition()
-                                .duration(this.tweenDuration)
-                                .attrTween("d", this.pieTween);
-                        paths.exit()
-                                .transition()
-                                .duration(this.tweenDuration)
-                                .attrTween("d", this.removePieTween)
-                                .remove();
-
-						if(this.type != "mini"){
-
-							var threshold = 0.1;
-					
-							//draw tick marks
-							var label_group = d3.select('#'+pieId+' .label_group');
-							lines = label_group.selectAll("line").data(filteredData);
-							lines.enter().append("svg:line")
-									.attr("x1", 0)
-									.attr("x2", 0)
-									.attr("y1", function(d){
-										if(d.value > threshold){
-											return -that.r-3;
-										}else{
-											return -that.r;
-										}
-									})
-									.attr("y2", function(d){
-										if(d.value > threshold){
-											return -that.r-8;
-										}
-										else{									
-											return -that.r;
-										}
-									})
-									.attr("stroke", "gray")
-									.attr("transform", function(d) {
-											return "rotate(" + (d.startAngle+d.endAngle)/2 * (180/Math.PI) + ")";
-									});
-
-							lines.transition()
-									.duration(this.tweenDuration)
-									.attr("transform", function(d) {
-											return "rotate(" + (d.startAngle+d.endAngle)/2 * (180/Math.PI) + ")";
-									});
-
-							lines.exit().remove();
-
-							
-							//draw labels						
-							valueLabels = label_group.selectAll("text.value").data(filteredData)
-							valueLabels.enter().append("svg:text")
-									.attr("class", "value")
-									.attr("transform", function(d) {
-										return "translate(" + Math.cos(((d.startAngle+d.endAngle - Math.PI)/2)) * (that.r + that.textOffset) + "," + Math.sin((d.startAngle+d.endAngle - Math.PI)/2) * (that.r + that.textOffset) + ")";
-									})
-									.attr("dy", function(d){
-											if ((d.startAngle+d.endAngle)/2 > Math.PI/2 && (d.startAngle+d.endAngle)/2 < Math.PI*1.5 ) {
-													return 5;
-											} else {
-													return -7;
-											}
-									})
-									.attr("text-anchor", function(d){
-											if ( (d.startAngle+d.endAngle)/2 < Math.PI ){
-													return "beginning";
-											} else {
-													return "end";
-											}
-									}).text(function(d){
-											//if value is greater than threshold show percentage
-											if(d.value > threshold){
-												var percentage = (d.value/that.totalOctets)*100;
-												return percentage.toFixed(2)+"%";
-											}
-									});
-
-							valueLabels.transition().duration(this.tweenDuration).attrTween("transform", this.textTween);
-							valueLabels.exit().remove();
-
-							//draw labels with entity names
-							nameLabels = label_group.selectAll("text.units").data(filteredData)
-							  
-							nameLabels.enter().append("svg:text")
-									.attr("class", "units")
-									.attr("transform", function(d) {
-											return "translate(" + Math.cos(((d.startAngle+d.endAngle - Math.PI)/2)) * (that.r+that.textOffset) + "," + Math.sin((d.startAngle+d.endAngle - Math.PI)/2) * (that.r+that.textOffset) + ")";
-									})
-									.attr("dy", function(d){
-											if ((d.startAngle+d.endAngle)/2 > Math.PI/2 && (d.startAngle+d.endAngle)/2 < Math.PI*1.5 ) {
-													return 17;
-											} else {
-													return 5;
-											}
-									})
-									.attr("text-anchor", function(d){
-											if ((d.startAngle+d.endAngle)/2 < Math.PI ) {
-													return "beginning";
-											} else {
-													return "end";
-											}
-									}).text(function(d){
-										//if value is greater than threshold show name
-										if(d.value > threshold){
-											return d.name;
-										}
-									});
-
-							nameLabels.transition().duration(this.tweenDuration).attrTween("transform", this.textTween);
-							nameLabels.exit().remove();
-						}												
-                        this.currentPieData = this.newPieData;// the new data is now current data
                 }
         };
-
-        $.fn.doughnutPie = function() {
-                var method = arguments[0];
-
-                if(methods[method]) {
-                        method = methods[method];
-                        arguments = Array.prototype.slice.call(arguments, 1);
-                } else if( typeof(method) == 'object' || !method ) {
-                        method = methods.init;
-                } else {
-                        $.error( 'Method ' + method + ' does not exist on jQuery.doughnutPie' );
-                        return this;
-                }
-
-                return method.apply(this, arguments);
-        }
 
 })(jQuery);
 
@@ -661,10 +338,10 @@ var worldMapper = {
 	createMiniWorldMap: function(collection){
 		var that = this;
 		
-		var width = 120,
-			height = 80,
-			rotate = 60,        // so that [-60, 0] becomes initial center of projection
-			maxlat = 83;        // clip northern and southern poles (infinite in mercator)
+		var width = 600,
+			height = 400,
+			rotate = 20,        // so that [-60, 0] becomes initial center of projection
+			maxlat = 80;        // clip northern and southern poles (infinite in mercator)
 			
 		var projection = d3.geo.mercator()
 			.rotate([rotate,0])
@@ -691,7 +368,7 @@ var worldMapper = {
 		var path = d3.geo.path()
 			.projection(projection);
 
-		var svg = d3.selectAll('#majormap')
+		var svg = d3.selectAll('#map')
 			.append('svg')
 				.attr('width',width)
 				.attr('height',height)
@@ -708,10 +385,6 @@ var worldMapper = {
 			
 		worldMap.selectAll('path')       // re-project path data
 			.attr('d', path);			
-
-
-
-
 
 this.brush = d3.svg.brush()
 	.extent([0, 30])
@@ -758,12 +431,7 @@ this.gBrush = svg.append("g")
 							extent1 = extent0;
 						  }
 						  
-
-
-							worldMap.classed("selected", function(d) {
-
-
-								
+							worldMap.classed("selected", function(d) {								
 
 								console.log("extent[0]", extent[0]);
 								console.log("extent[1]", extent[1]);
@@ -794,62 +462,8 @@ this.gBrush = svg.append("g")
 								
 								worldMapper.redraw()
 											  
-							})
-							
-							
-						
-						/*
-						worldMapper.gBrush.selectAll("rect")
-							.attr("height", 30)
-							.attr("width", 30);*/
-							
-							//console.log(worldMapper.brush.extent(extent1));
-						 
-						 //d3.select(this).call(worldMapper.brush.extent(extent1));
-						  
-						  
-						  /*
-
-							var extent = d3.event.target.extent();
-							worldMap.classed("selected", function(d) {
-
-
-								worldMapper.redraw()
-
-								console.log("extent[0]", extent[0]);
-								console.log("extent[1]", extent[1]);
-
-								var boxWidth = extent[1][0] - extent[0][0];
-								var boxHeight = extent[1][1] - extent[0][1];
-
-								console.log("boxWidth", boxWidth);
-								console.log("boxHeight", boxHeight);
-
-								var smallMapWidth = 120;
-								var smallMapHeight = 80;
-
-								var bigMapWidth = 600;
-								var bigMapHeight = 400;
-
-
-
-								var xRatio = extent[0][0]/smallMapWidth;
-								var yRatio = extent[1][1]/smallMapHeight;
-
-
-								var newX =  bigMapWidth*xRatio;
-								var newY =  bigMapHeight*yRatio;
-
-								worldMapper.newT = new Array(newX, newY);
-								console.log("worldMapper.newT", worldMapper.newT);
-											  
-							})
-							
-								*/
-								
-			}
-				
-		 
+							})	
+			}	
 	},
 	majorWorld: {},
 	tlast: [0,0],
@@ -909,19 +523,6 @@ this.gBrush = svg.append("g")
 		for (var i=0; i < that.dataCharts.length; i++) {
 			projectedCoordinates[i] = that.majorWorld.projection(that.dataCharts[i]["coordinates"]);
 			
-			that.coordinateItems.append("g")
-					.attr("transform", "translate("+projectedCoordinates[i][0]+", "+projectedCoordinates[i][1]+")")
-					.attr("id", "minipie"+i)
-					.on("click", function() {
-						var id = $(this).attr("id");
-						
-						idNumber = parseInt(id.replace(/[^\d.]/g, ''));
-						var localPieData = that.dataCharts[idNumber]["pieData"];
-						
-						$("#detailPie").empty();
-						worldMapper.initPie("#detailPie", "Spectrum", 400, 400, 90, 70, 70);
-						worldMapper.updatePie("#detailPie", localPieData);
-					});
 		}
 		
 	},
@@ -943,7 +544,7 @@ this.gBrush = svg.append("g")
 			maxlat = 80;        // clip northern and southern poles (infinite in mercator)
 				
 		var projection = d3.geo.mercator()
-			.rotate([rotate,0])
+//			.rotate([rotate,0]) Shahyan commented out.
 			.scale(1)           // we'll scale up to match viewport shortly.
 			.translate([width/2, height/2]);
 
@@ -956,13 +557,13 @@ this.gBrush = svg.append("g")
 		projection
 			.scale(scaleExtent[0]);
 
-/*		
+		
 		var zoom = d3.behavior.zoom()
 			.scaleExtent(scaleExtent)
 			.scale(projection.scale())
 			.translate([0,0])               // not linked directly to projection
 			.on("zoom", that.redraw);	
-*/		
+	
 						
 		that.path = d3.geo.path()
 			.projection(projection);
@@ -987,32 +588,6 @@ this.gBrush = svg.append("g")
 		this.majorWorld["scaleExtent"] = scaleExtent;
 		this.majorWorld["maxlat"] = maxlat;
 
-		//d3.json("readme.json", function(collection) {
-		
-		//that.initPie("#detailPie", "Spectrum", 400, 400, 90, 70, 70);
-			
-		that.MajorMap
-			.selectAll("path")
-		.data(collection.features)
-			.enter().append("path")
-			.attr("d", d3.geo.path().projection(d3.geo.mercator()));
-		that.redraw();       // update path data 
-
-		//})
-
-		/*
-		d3.json("world-50m.json", function ready(error, world) {
-			
-			console.log("world", world);
-			
-			svg.selectAll('path')
-				.data(topojson.feature(world, world.objects.countries).features)
-			  .enter().append('path')
-			
-			redraw();       // update path data
-			
-		});
-		*/
 
 		// track last translation and scale event we processed
 		this.tlast = [0,0]; 
@@ -1021,41 +596,6 @@ this.gBrush = svg.append("g")
 
 		that.plotPoints(); 	
 			
-		/*
-		function redraw() {
-			if (d3.event) { 
-				var scale = d3.event.scale,
-					t = d3.event.translate;                
-				
-				// if scaling changes, ignore translation (otherwise touch zooms are weird)
-				if (scale != slast) {
-					projection.scale(scale);
-				} else {
-					var dx = t[0]-tlast[0],
-						dy = t[1]-tlast[1],
-						yaw = projection.rotate()[0],
-						tp = projection.translate();
-				
-					// use x translation to rotate based on current scale
-					projection.rotate([yaw+360.*dx/width*scaleExtent[0]/scale, 0, 0]);
-					// use y translation to translate projection, clamped by min/max
-					var b = mercatorBounds(projection, maxlat);
-					if (b[0][1] + dy > 0) dy = -b[0][1];
-					else if (b[1][1] + dy < height) dy = height-b[1][1];
-					projection.translate([tp[0],tp[1]+dy]);
-				}
-				// save last values.  resetting zoom.translate() and scale() would
-				// seem equivalent but doesn't seem to work reliably?
-				slast = scale;
-				tlast = t;
-			}
-			
-			worldMap.selectAll('path')       // re-project path data
-				.attr('d', path);
-
-			plotPoints();		
-		}
-		*/	
 	},
 	init: function(){
 
@@ -1064,78 +604,36 @@ this.gBrush = svg.append("g")
 				"coordinates": [
 					10,
 					20
-				],
-				"pieData": [
-					{"label":"Blade Workstation", "value":0.0001}, 
-					{"label":"GenX", "value":4}, 
-					{"label":"GenY", "value":0.0001},
-					{"label":"Laptop", "value":34},
-					{"label":"Physical Desktop", "value":13}
 				]
 			},
 			{
 				"coordinates": [
 					-0.134153,
 					51.509757
-				],
-				"pieData": [
-					{"label":"Blade Workstation", "value":33}, 
-					{"label":"GenX", "value":12}, 
-					{"label":"GenY", "value":23},
-					{"label":"Laptop", "value":23},
-					{"label":"Physical Desktop", "value":322}
 				]
 			},
 			{
 				"coordinates": [
 					-0.134153,
 					21.509757
-				],
-				"pieData": [
-					{"label":"Blade Workstation", "value":0.0001}, 
-					{"label":"GenX", "value":0.0001}, 
-					{"label":"GenY", "value":0.0001},
-					{"label":"Laptop", "value":54},
-					{"label":"Physical Desktop", "value":45}
 				]
 			},
 			{
 				"coordinates": [
 					-82.134153,
 					29.509757
-				],
-				"pieData": [
-					{"label":"Blade Workstation", "value":34}, 
-					{"label":"GenX", "value":34}, 
-					{"label":"GenY", "value":0.0001},
-					{"label":"Laptop", "value":0.0001},
-					{"label":"Physical Desktop", "value":57}
 				]
 			},
 			{
 				"coordinates": [
 					-82.134153,
 					49.509757
-				],
-				"pieData": [
-					{"label":"Blade Workstation", "value":0.0001}, 
-					{"label":"GenX", "value":0.0001}, 
-					{"label":"GenY", "value":789},
-					{"label":"Laptop", "value":34},
-					{"label":"Physical Desktop", "value":0.0001}
 				]
 			},
 			{
 				"coordinates": [
 					-82.134153,
 					49.509757
-				],
-				"pieData": [
-					{"label":"Blade Workstation", "value":23}, 
-					{"label":"GenX", "value":23}, 
-					{"label":"GenY", "value":43},
-					{"label":"Laptop", "value":0.0001},
-					{"label":"Physical Desktop", "value":0.0001}
 				]
 			}				
 		];	
@@ -1148,12 +646,8 @@ this.gBrush = svg.append("g")
 			that.createMiniWorldMap(collection);			
 		//})		
 		
-
 	}
 }
-
-
-
 
 $( document ).ready(function() {
 	worldMapper.init();

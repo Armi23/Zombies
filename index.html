@@ -15,21 +15,12 @@
                 background: #ffffff;
             }
 
-
-        
         #maps{
             float:left;
             position: relative;
         }
 
-        #minimap{
-            position: absolute;
-            bottom: 0;
-            right:0;
-        }
-
-        #majormap svg,
-        #minimap svg {
+        #map svg {
           background-color: #ffffff;
           border: 1px solid #404040;
         }
@@ -43,8 +34,8 @@
 
 
         .worldmap path {
-          fill: green;
-          stroke: #666;
+          fill: crimson;
+          stroke: #aaa;
           stroke-width: .5px;
         }
 
@@ -56,46 +47,15 @@
             stroke: #333333;
         }
 
-        #detailPie {
-          background-color: #ffffff;
-          border: 1px solid #404040;
-          font: 10px sans-serif;
-          height: 400px;
-          text-shadow: none;
-        }
-        #detailPie .total{
-          font-size: 18px;
-          font-weight: bold;
-          fill: #333;
-        }
-        #detailPie .units{
-          fill: gray;
-          font-size: 12px;
-        }
-        #detailPie .label{
-          fill: #333;
-          font-size: 12px;
-          font-weight: bold;
-
-        }
-        #detailPie .value{
-          font-size: 12px;
-          font-weight: bold;
-          fill: #333;
-        }
         </style> 
 
         <div id="container">
             <div id="dashboard">
                 <div id="maps">
-                    <div id="majormap"></div>
-                    <div id="minimap"></div>
+                    <div id="map"></div>
                 </div>
-                <div id="detailPie"></div>
             </div>
         </div>
-
-
 
         <script type="text/javascript">
 
