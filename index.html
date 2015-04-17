@@ -2,6 +2,9 @@
 <html>
 <head>
 	<title>Pandemic Map</title>
+	<script src="libs/d3/d3.min.js" charset="utf-8"></script>
+	<script src="libs/jquery/jquery-2.1.1.min.js" charset="utf-8"></script>
+
 </head>
 <body>
 
@@ -9,6 +12,50 @@
 
 
 <script type="text/javascript">
+	var year = 2013 // Latest density models use densities from 2013
+	var airports = {}
+	var densities = {}
+	var migrations = {}
+
+	$(function() {
+		d3.csv("airports.dat", function(csv) {
+			for (var i = 0; i < csv.length; i++) {
+				if (!(csv[i].country in airports)) {
+					airports[csv[i].country] = []
+				}
+
+				new_aiport = {
+					"lat": csv[i].lat,
+					"lng": csv[i].lng,
+					"id": csv[i].id
+				}
+
+				airports[csv[i].country].push(new_aiport)
+			};
+			// console.log(airports);
+		});
+
+		d3.csv("densities.csv", function(csv) {
+			for (var i = 0; i < csv.length; i++) {
+				densities[csv[i]["Country Name"]] = csv[i][year]
+			};
+			// console.log(densities);
+		});
+
+		d3.csv("migration.csv", function(csv) {
+			for (var i = 0; i < csv.length; i++) {
+				out_country = csv[i]["Source"]
+				migrations[out_country] = {}
+
+				for (var key in csv[i]) {
+					migrations[out_country][key] = csv[i][key]
+				}
+			};
+			// console.log(migrations);
+		});
+	})
+
+
 
 </script>
 
