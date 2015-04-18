@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-    <meta charset="utf-8">c
+    <meta charset="utf-8">
     <head>
         <title>Pandemic Map</title>
         <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -213,7 +213,7 @@
         //geo translation on mouse click in map
         function click() {
           var latlon = projection.invert(d3.mouse(this));
-          console.log(latlon);
+          var country = clickCountry(latlon[1], latlon[0]);
         }
 
 
@@ -248,8 +248,9 @@
         var airports = {}
         var densities = {}
         var migrations = {}
+        var areas = {}
 
-        function getCountry(lat, lng) {
+        function clickCountry(lat, lng) {
             var latlng = new google.maps.LatLng(lat, lng);
             var geocoder = new google.maps.Geocoder();
             geocoder.geocode({ 'latLng': latlng }, function (results, status) {
@@ -259,14 +260,19 @@
                     // Iterate through properties of result to find country
                     for (var i = 0; i < first[comp].length; i++) {
                         if (first[comp][i].types[0] == "country") {
-                            console.log(first[comp][i]["long_name"]);
-                            return first[comp][i]["long_name"]
+                            var country = first[comp][i]["long_name"]
+                            model(country, lat, lng);
                         }
                     };
                 }
-
-                return null;
             });
+        }
+
+        // Run SIR Model here within blocks
+        function model (country, lat, lng) {
+        	console.log(country);
+        	var blocks = areas[country]
+        	var people_density = densities[country]
         }
 
         $(function() {
@@ -284,14 +290,14 @@
 
         			airports[csv[i].country].push(new_aiport)
         		};
-        		console.log(airports);
+        		// console.log(airports);
         	});
 
         	d3.csv("data/densities.csv", function(csv) {
         		for (var i = 0; i < csv.length; i++) {
         			densities[csv[i]["Country Name"]] = csv[i][year]
         		};
-        		console.log(densities);
+        		// console.log(densities);
         	});
 
         	d3.csv("data/migration.csv", function(csv) {
@@ -303,14 +309,16 @@
         				migrations[out_country][key] = csv[i][key]
         			}
         		};
-        		console.log(migrations);
+        		// console.log(migrations);
         	});
 
-            var country = getCountry(40.714224,-73.961452)
+        	d3.csv("data/area.csv", function(csv) {
+        		for (var i = 0; i < csv.length; i++) {
+					areas[csv[i]["Country Name"]] = csv[i][year]
+        		};
+        		// console.log(areas);
+        	});
         })
-
-
-
         </script>
     </body>
 </html>
