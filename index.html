@@ -7,6 +7,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script src="http://d3js.org/d3.v3.min.js"></script>
 	<script src="http://d3js.org/topojson.v1.min.js"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 
 	<style>
 	body{
@@ -59,9 +60,31 @@
 
         <script type="text/javascript">
         var year = 2013 // Latest density models use densities from 2013
+        var country_index = 5 // For google reverse geocoding
+        var comp = "address_components" // Key to parse out country names
         var airports = {}
         var densities = {}
         var migrations = {}
+
+        function getCountry(lat, lng) {
+            var latlng = new google.maps.LatLng(lat, lng);
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ 'latLng': latlng }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    first = results[0]; // Assume results have same country
+
+                    // Iterate through properties of result to find country
+                    for (var i = 0; i < first[comp].length; i++) {
+                        if (first[comp][i].types[0] == "country") {
+                            console.log(first[comp][i]["long_name"]);
+                            return first[comp][i]["long_name"]
+                        }
+                    };
+                }
+
+                return null;
+            });
+        }
 
         $(function() {
         	d3.csv("data/airports.dat", function(csv) {
@@ -99,6 +122,8 @@
         		};
         		// console.log(migrations);
         	});
+
+            var country = getCountry(40.714224,-73.961452)
         })
 
         </script>
