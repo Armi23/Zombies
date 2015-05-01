@@ -6,8 +6,9 @@
         <script src="http://d3js.org/d3.v3.min.js"></script>
         <script src="http://d3js.org/topojson.v1.min.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+        <script src="js/model.js"></script>
         <style>
 
             .country{
@@ -268,12 +269,7 @@
             });
         }
 
-        // Run SIR Model here within blocks
-        function model (country, lat, lng) {
-        	console.log(country);
-        	var blocks = areas[country]
-        	var people_density = densities[country]
-        }
+
 
         $(function() {
         	d3.csv("data/airports.dat", function(csv) {
