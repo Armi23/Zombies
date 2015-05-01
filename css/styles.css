@@ -1,28 +1,37 @@
-.country{
-    stroke: #fff;
+main {
+    width: 1000px;
+    margin: 0 auto;
+}
+
+.country, :active {
+  stroke: #fff;
   stroke-width: 0.5px;
 }
 
-.country:hover{
+.country:hover {
   stroke: #fff;
   stroke-width: 1.5px;
 }
 
-.text{
+.text {
   font-size:10px;
   text-transform:capitalize;
 }
+
 #container {
-  margin:10px 10%;
+  margin:10px 5%;
   border:2px solid #000;
   border-radius: 5px;
   height:100%;
   overflow:hidden;
-  background: #F0F8FF;
+  background: #cce7ff;
+  width: 650px;
 }
+
 .hidden {
   display: none;
 }
+
 div.tooltip {
   color: #222;
   background: #fff;
@@ -33,12 +42,14 @@ div.tooltip {
   opacity: 0.9;
   position: absolute;
 }
+
 .graticule {
   fill: none;
   stroke: #bbb;
   stroke-width: .5px;
   stroke-opacity: .5;
 }
+
 .equator {
   stroke: #ccc;
   stroke-width: 1px;
