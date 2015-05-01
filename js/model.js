@@ -4,6 +4,7 @@ alpha = 0.3
 infected_blocks = []
 not_surrounded = []
 
+// Creates a new block with the proper density
 function newBlock (country, lat, lng) {
 	var people_density = densities[country];
 	return {"S": people_density, "I": 0, "R": 0, "lat": lat, "lng": lng, "Neighbors": {
@@ -18,7 +19,12 @@ function newBlock (country, lat, lng) {
 	}};
 };
 
+// Runs one step of the SIR model on the block. Returns ocean block
 function SIR (block) {
+	if (block.ocean == true) {
+		return;
+	} 
+	
 	S = block.S;
 	I = block.I;
 	R = block.R;
