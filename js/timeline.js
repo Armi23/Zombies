@@ -1,0 +1,1 @@
+// This is where users will be able to scrubs through the duration that the disease has been active

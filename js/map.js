@@ -64,7 +64,7 @@ d3.select(window).on("resize", throttle);
               .attr("d", path)
               .attr("id", function(d,i) { return d.id; })
               .attr("title", function(d,i) { return d.properties.name; })
-              .style("fill", "coral");        //function(d, i) { return d.properties.color; });
+              .style("fill", "green");        //function(d, i) { return d.properties.color; });
 
           //offsets for tooltips
           var offsetL = document.getElementById('container').offsetLeft+20;
@@ -129,8 +129,13 @@ d3.select(window).on("resize", throttle);
           g.attr("transform", "translate(" + t + ")scale(" + s + ")");
 
           //adjust the country hover stroke width based on zoom level
-          d3.selectAll(".country").style("stroke-width", 1.5 / s);
-
+          d3.selectAll(".country").style("stroke-width", 0.5 / s)
+              .on("mouseover", function(d,i) {
+                d3.select(this).style("stroke-width", 1.5 / s)
+                })
+              .on("mouseout", function(d,i) {
+                d3.select(this).style("stroke-width", 0.5 / s)
+                })
         }
 
 

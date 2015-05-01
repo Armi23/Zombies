@@ -1,0 +1,1 @@
+// This is where we will edit the parameters of the disease. We will have some presets for different diseases but we will also allow users to change these manually

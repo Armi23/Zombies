@@ -1,0 +1,1 @@
+// When clicking on country, the barchart should be updated with information about infection in the designated country, otherwise we should see information about global infections
