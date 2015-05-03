@@ -183,7 +183,6 @@ d3.select(window).on("resize", throttle);
 
         var year = 2013 // Latest density models use densities from 2013
         var country_index = 5 // For google reverse geocoding
-        var comp = "address_components" // Key to parse out country names
         var airports = {}
         var densities = {}
         var migrations = {}

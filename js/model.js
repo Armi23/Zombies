@@ -19,12 +19,12 @@ function newBlock (country, lat, lng) {
 	}};
 };
 
-// Runs one step of the SIR model on the block. Returns ocean block
+// Runs one step of the SIR model on the block. Just returns on ocean block
 function SIR (block) {
 	if (block.ocean == true) {
 		return;
 	} 
-	
+
 	S = block.S;
 	I = block.I;
 	R = block.R;
@@ -35,17 +35,15 @@ function SIR (block) {
 	block.R += alpha * S * I / N;
 }
 
-function model (country, lat, lng) {
-	console.log(country);
-	console.log(lat)
-	var blocks = areas[country]
-	var people_density = densities[country]
-	console.log(people_density)
+// Start the infection from this point
+function launchModel (country, lat, lng) {
 
+	// Click location is site of first Zombie
 	var starter_block = newBlock(country, lat, lng)
 	starter_block.S -= 1
 	starter_block.I += 1
 
+	// All the neighboring blocks are initialized as susceptible
 	starter_block.Neighbors.N = newBlock(country, lat, lng);
 	starter_block.Neighbors.E = newBlock(country, lat, lng);
 	starter_block.Neighbors.W = newBlock(country, lat, lng);
@@ -58,18 +56,21 @@ function model (country, lat, lng) {
 	infected_blocks.push(starter_block)
 	not_surrounded.push(starter_block)
 
-	for (var i = 0; i < 5; i++) {
-		for (var i = 0; i < infected_blocks.length; i++) {
-			SIR(infected_blocks[i])
+	// Run the steps of the simulation (replace with ticks)
+	window.setInterval(function() {
+		for (var j = 0; j < infected_blocks.length; j++) {
+			SIR(infected_blocks[j])
 		};
 		spread()
-	};
+	}, 1000)
+	console.log(infected_blocks);
 }
 
+// Find all the locations around this block that are not infected
 function vulnerable_neighbors (block) {
 	vulnerable = []
 	for (var dir in block.Neighbors) {
-		if (block.Neighbors[dir].I == 0) {
+		if (block.Neighbors[dir].I == 0 && block.Neighbors[dir].R == 0) {
 			vulnerable.push(dir)
 		}
 	}
@@ -77,35 +78,60 @@ function vulnerable_neighbors (block) {
 	return vulnerable;
 }
 
+// Stochastically have a zombie spread into an uninfected neighboring block
 function spread () {
-	spreadIndex = Math.floor(Math.random() * not_surrounded.length)
-	vulnerable_list = vulnerable_neighbors(not_surrounded[spreadIndex])
-	targetIndex = Math.floor(Math.random() * vulnerable_list.length)
-	targetDir = vulnerable_list[targetIndex]
+	console.log("spread!");
 
-	target = not_surrounded[spreadIndex].Neighbors[targetDir]
-	target.S -= 1
-	target.I += 1
+	// Select number of zombies that will spread
+	spreading_zombies = Math.floor(Math.random() * not_surrounded.length) + 1;
+	for (var i = 0; i < spreading_zombies; i++) {
 
-	console.log(targets)
+		// Select a block to spread from
+		spread_point = Math.floor(Math.random() * not_surrounded.length)
+
+		// Get a list of uninfected neighbors and select one of them randomly
+		vulnerable_list = vulnerable_neighbors(not_surrounded[spread_point])
+		targetIndex = Math.floor(Math.random() * vulnerable_list.length)
+		targetDir = vulnerable_list[targetIndex]
+
+		// If this block is surrounded by infected, remove it. 
+		if (vulnerable_list.length == 1) {
+			not_surrounded.splice(spread_point, 1);
+		} else if (vulnerable_list.length == 0) {
+			return;
+		}
+
+		// Infect targeted block
+		console.log(targetDir);
+		target = not_surrounded[spread_point].Neighbors[targetDir]
+		target.S -= 1
+		target.I += 1
+		infected_blocks.push(target)
+		not_surrounded.push(target)
+		console.log(target)
+	};
 }
 
-function newLatLng (lat1, lng1, d, brng) {
-	switch(brng) {
-		case 0:
-			lat2 = lat1 + 1.0 / 111111
-			return [lat2, lng1]
-		case 90:
-			lng2 = lng1 + 1.0 / (111111.0 * Math.cos(lat1))
-			return [lat1, lng2]
-		case 180:
-			lat2 = lat1 - 1.0 / 111111
-			return [lat2, lng1]
-		case 270:
-			lng2 = lng1 - 1.0 / (111111.0 * Math.cos(lat1))
-			return [lat1, lng2]
-		default:
-			alert("Bad lat / lng")
+function infectBlock (diseased_block, new_block, dir) {
+	console.log("hi");
+}
 
+// Get the lat/long of a block in the given direction
+function newLatLng (lat1, lng1, d, brng) {
+	var lat2 = 0
+	var lng2 = 0
+
+	if (brng[0] == "N") {
+		lat2 = lat1 + 1.0 / 111111
+	} else if (brng[0] == "S") {
+		lat2 = lat1 - 1.0 / 111111
 	}
+
+	if (brng[0] == "E" || brng[1] == "E") {
+		lng2 = lng1 + 1.0 / (111111.0 * Math.cos(lat1))	
+	} else if (brng[0] == "W" || brng[1] == "W") {
+		lng2 = lng1 - 1.0 / (111111.0 * Math.cos(lat1))
+	}
+
+	return [lat1, lng2]
 }
