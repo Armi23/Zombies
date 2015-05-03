@@ -19,8 +19,8 @@ main {
 }
 
 #container {
-  margin:10px 5%;
-  border:2px solid #000;
+  margin: 10px 5%;
+  border: 2px solid #000;
   border-radius: 5px;
   height:100%;
   overflow:hidden;
@@ -53,4 +53,25 @@ div.tooltip {
 .equator {
   stroke: #ccc;
   stroke-width: 1px;
+}
+
+
+#controls{
+    border: solid 1px black;
+    border-radius: 10px;
+    height: 300px;
+    width: 200px;
+    margin-top: 30px;
+    color: darkslategray;
+    background-color: lightgrey;
+}
+
+#timeline {
+    border: solid 1px blue;
+    margin-bottom: 10px;
+}
+
+#barchart {
+    border: solid 1px red; 
+    margin-bottom: 10px;
 }
