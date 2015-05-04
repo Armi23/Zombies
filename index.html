@@ -28,7 +28,6 @@
                         <input type="submit" value="Start">
                     </form>
 -->
-               <input type="submit" value="Start">
                 </div>
             </div>
             <div class="row">
@@ -56,71 +55,24 @@
             <script src="js/geocoder.js"></script>
             <script src="libs/jquery-2.1.1.min.js"></script>
             <script>
-                $(function(){
-                    var year = 2013 // Latest density models use densities from 2013
-                    var country_index = 5 // For google reverse geocoding
-                    var airports = {}
-                    var densities = {}
-                    var migrations = {}
-                    var areas = {}
-
-                    var that = this;
-                    d3.csv("data/airports.dat", function(csv) {
-                      for (var i = 0; i < csv.length; i++) {
-                        if (!(csv[i].country in airports)) {
-                          airports[csv[i].country] = []
-                        }
-
-                        new_aiport = {
-                          "lat": csv[i].lat,
-                          "lng": csv[i].lng,
-                          "id": csv[i].id
-                        }
-
-                        airports[csv[i].country].push(new_aiport)
-                      };
-                    });
-
-                    d3.csv("data/densities.csv", function(csv) {
-                      for (var i = 0; i < csv.length; i++) {
-                        densities[csv[i]["Country Name"]] = csv[i][year]
-                      };
-                    });
-
-                    d3.csv("data/migration.csv", function(csv) {
-                      for (var i = 0; i < csv.length; i++) {
-                        out_country = csv[i]["Source"]
-                        migrations[out_country] = {}
-
-                        for (var key in csv[i]) {
-                          migrations[out_country][key] = csv[i][key]
-                        }
-                      };
-                    });
-
-                    d3.csv("data/area.csv", function(csv) {
-                      for (var i = 0; i < csv.length; i++) {
-                        areas[csv[i]["Country Name"]] = csv[i][year]
-                      };
-                    });
-
+                $(function(){ // this function is called after the HTML document is fully loaded
+                    
                     // some variables
                     var var1 = [];
                     var var2 = {};
+                    MyEventHandler = {};
                     
                     var init = function(){
-                        var MyEventHandler = {};
                         
                         // create initializers barchart.js controls.js timeline.js
                         //TODO: Instantiate all Vis Objects here
 
-//                        var controls = new Controls(d3.select("#controls"), var1, var2, MyEventHandler);
+                        // var controls = new Controls(d3.select("#controls"), var1, var2, MyEventHandler);
                         // var barchart = new BarChart(d3.select("#barchart"), var1, var2);
                        var timeline = new TimeVis(d3.select("#timeline"), MyEventHandler);
-                       var map = new MapVis(MyEventHandler)
 
                        $(MyEventHandler).bind("timeTick", function(e, data) {
-                        timeline.updateData(data);
+                        timeline.updateData(data["time"]);
                        })
 
                     }

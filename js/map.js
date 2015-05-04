@@ -1,71 +1,66 @@
-MapVis = function (_eventHandler) {
-  this.eventHandler = _eventHandler;
+d3.select(window).on("resize", throttle);
 
-  this.width = document.getElementById('container').offsetWidth;
-  this.height = width / 2;
+var zoom = d3.behavior.zoom()
+  .scaleExtent([1, 9])
+  .on("zoom", move);
 
-  this.topo;
 
-  this.graticule = d3.geo.graticule();
+var width = document.getElementById('container').offsetWidth;
+var height = width / 2;
 
-  this.tooltip = d3.select("#container").append("div").attr("class", "tooltip hidden");
+var topo,projection,path,svg,g;
 
-  d3.json("data/world-topo-min.json", function(error, world) {
+var graticule = d3.geo.graticule();
 
-    var countries = topojson.feature(world, world.objects.countries).features;
+var tooltip = d3.select("#container").append("div").attr("class", "tooltip hidden");
 
-    this.topo = countries;
-    this.draw();
+setup(width,height);
 
-  });
-  
-  this.initVis();
-}
+function setup(width,height){
+  projection = d3.geo.mercator()
+    .translate([(width/2), (height/2)])
+    .scale( width / 2 / Math.PI);
 
-MapVis.prototype.initVis = function() {
-  d3.select(window).on("resize", this.throttle);
+  path = d3.geo.path().projection(projection);
 
-  this.projection = d3.geo.mercator()
-    .translate([(this.width/2), (this.height/2)])
-    .scale( this.width / 2 / Math.PI);
-
-  this.path = d3.geo.path().projection(projection);
-
-  this.svg = d3.select("#container").append("svg")
-      .attr("width", this.width)
-      .attr("height", this.height)
-      .call(this.zoom)
+  svg = d3.select("#container").append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .call(zoom)
       .on("click", click)
       .append("g");
 
-  this.g = svg.append("g");
+  g = svg.append("g");
+}
 
-};
+d3.json("data/world-topo-min.json", function(error, world) {
 
-MapVis.prototype.zoom = function() {
-  d3.behavior.zoom()
-  .scaleExtent([1, 9])
-  .on("zoom", move);
-};
+  var countries = topojson.feature(world, world.objects.countries).features;
 
-MapVis.prototype.draw = function() {
-  var that = this;
+  topo = countries;
+  draw(topo);
 
-  this.svg.append("path")
-     .datum(that.graticule)
+});
+
+function draw(topo) {
+
+  svg.append("path")
+     .datum(graticule)
      .attr("class", "graticule")
-     .attr("d", that.path);
+     .attr("d", path);
 
-  this.g.append("path")
+
+  g.append("path")
    .datum({type: "LineString", coordinates: [[-180, 0], [-90, 0], [0, 0], [90, 0], [180, 0]]})
    .attr("class", "equator")
    .attr("d", path);
 
-  var country = g.selectAll(".country").data(that.topo);
+
+  var country = g.selectAll(".country").data(topo);
 
   country.enter().insert("path")
       .attr("class", "country")
-      .attr("d", that.path)
+      .attr("d", path)
       .attr("id", function(d,i) { return d.id; })
       .attr("title", function(d,i) { return d.properties.name; })
       .style("fill", "green");        //function(d, i) { return d.properties.color; });
@@ -78,47 +73,58 @@ MapVis.prototype.draw = function() {
   country
     .on("mousemove", function(d,i) {
 
-      var mouse = d3.mouse(that.svg.node()).map( function(d) { return parseInt(d); } );
+      var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
 
-      that.tooltip.classed("hidden", false)
+      tooltip.classed("hidden", false)
              .attr("style", "left:"+(mouse[0]+offsetL)+"px;top:"+(mouse[1]+offsetT)+"px")
              .html(d.properties.name);
 
       })
       .on("mouseout",  function(d,i) {
-        that.tooltip.classed("hidden", true);
+        tooltip.classed("hidden", true);
       });
+
+
+  //EXAMPLE: adding some capitals from external CSV file
+  //  d3.csv("data/country-capitals.csv", function(err, capitals) {
+  //
+  //    capitals.forEach(function(i){
+  //      addpoint(i.CapitalLongitude, i.CapitalLatitude, i.CapitalName );
+  //    });
+  //
+  //  }); // WE DON'T NEED
+
 }
 
 
-MapVis.prototype.draw = function () {
-  this.width = document.getElementById('container').offsetWidth;
-  this.height = width / 2;
+function redraw() {
+  width = document.getElementById('container').offsetWidth;
+  height = width / 2;
   d3.select('svg').remove();
-  this.initVis();
-  this.draw();
+  setup(width,height);
+  draw(topo);
 }
 
 
-MapVis.prototype.move = function() {
+function move() {
 
   var t = d3.event.translate;
   var s = d3.event.scale;
   zscale = s;
-  var h = this.height/4;
+  var h = height/4;
 
 
   t[0] = Math.min(
-    (this.width/this.height)  * (s - 1),
+    (width/height)  * (s - 1),
     Math.max( width * (1 - s), t[0] )
   );
 
   t[1] = Math.min(
     h * (s - 1) + h * s,
-    Math.max(this.height  * (1 - s) - h * s, t[1])
+    Math.max(height  * (1 - s) - h * s, t[1])
   );
 
-  this.zoom.translate(t);
+  zoom.translate(t);
   g.attr("transform", "translate(" + t + ")scale(" + s + ")");
 
   //adjust the country hover stroke width based on zoom level
@@ -132,50 +138,97 @@ MapVis.prototype.move = function() {
 }
 
 var throttleTimer;
-MapVis.prototype.throttle = function() {
+function throttle() {
   window.clearTimeout(throttleTimer);
     throttleTimer = window.setTimeout(function() {
-      this.redraw();
+      redraw();
     }, 200);
 }
 
 
 //geo translation on mouse click in map
-MapVis.prototype.click = function() {
+function click() {
   var latlon = projection.invert(d3.mouse(this));
   var country = clickCountry(latlon[1], latlon[0]);
 }
 
 
 //function to add points and text to the map (used in plotting capitals)
-// function addpoint(lat,lon,text) {
-//   var gpoint = g.append("g").attr("class", "gpoint");
-//   var x = projection([lon, lat])[0];
-//   var y = projection([lon, lat])[1];
+function addpoint(lat,lon,text) {
+  var gpoint = g.append("g").attr("class", "gpoint");
+  var x = projection([lon, lat])[0];
+  var y = projection([lon, lat])[1];
 
-//   gpoint.append("svg:circle")
-//         .attr("cx", x)
-//         .attr("cy", y)
-//         .attr("class","point")
-//         .attr("r", 10);
+  gpoint.append("svg:circle")
+        .attr("cx", x)
+        .attr("cy", y)
+        .attr("class","point")
+        .attr("r", 10);
 
-//   //conditional in case a point has no associated text
-//   if(text.length>0){
+  //conditional in case a point has no associated text
+  if(text.length>0){
 
-//     gpoint.append("text")
-//           .attr("x", x+2)
-//           .attr("y", y+2)
-//           .attr("class","text")
-//           .text(text);
-//   }
+    gpoint.append("text")
+          .attr("x", x+2)
+          .attr("y", y+2)
+          .attr("class","text")
+          .text(text);
+  }
 
-// }
+}
 
+var year = 2013 // Latest density models use densities from 2013
+var country_index = 5 // For google reverse geocoding
+var airports = {}
+var densities = {}
+var migrations = {}
+var areas = {}
 
+$(function() {
+  d3.csv("data/airports.dat", function(csv) {
+    for (var i = 0; i < csv.length; i++) {
+      if (!(csv[i].country in airports)) {
+        airports[csv[i].country] = []
+      }
+
+      new_aiport = {
+        "lat": csv[i].lat,
+        "lng": csv[i].lng,
+        "id": csv[i].id
+      }
+
+      airports[csv[i].country].push(new_aiport)
+    };
+  });
+
+  d3.csv("data/densities.csv", function(csv) {
+    for (var i = 0; i < csv.length; i++) {
+      densities[csv[i]["Country Name"]] = csv[i][year]
+    };
+  });
+
+  d3.csv("data/migration.csv", function(csv) {
+    for (var i = 0; i < csv.length; i++) {
+      out_country = csv[i]["Source"]
+      migrations[out_country] = {}
+
+      for (var key in csv[i]) {
+        migrations[out_country][key] = csv[i][key]
+      }
+    };
+  // console.log(migrations);
+});
+
+d3.csv("data/area.csv", function(csv) {
+  for (var i = 0; i < csv.length; i++) {
+    areas[csv[i]["Country Name"]] = csv[i][year]
+  };
+});
+})
 
 var timeline_data = []
 var infected_counts = []
-MapVis.prototype.processGrid = function(grid) {
+function processGrid (grid) {
   data = [];
   infected = 0;
   for (var i in grid) {
@@ -191,7 +244,7 @@ MapVis.prototype.processGrid = function(grid) {
   return data;
 }
 
-MapVis.prototype.colorCircle = function(d, i) {
+function colorCircle (d, i) {
   if (d.I > d.R) {
     return "#ff0000"
   }
@@ -199,11 +252,11 @@ MapVis.prototype.colorCircle = function(d, i) {
   return "#0000ff";
 }
 
-MapVis.prototype.mapVis = function(grid) {
+function mapVis (grid) {
   data = processGrid(grid)
 
-  var circles = this.g.selectAll("circle")
-                  .data(data, this.key)
+  var circles = g.selectAll("circle")
+                  .data(data, key)
 
   circles.enter()
           .append("circle")
@@ -224,8 +277,11 @@ MapVis.prototype.mapVis = function(grid) {
           .attr("fill", function(d, i) {
             return colorCircle(d,i);
           })
+
+  $(MyEventHandler).trigger("timeTick", {"time": infected_counts})
+
 }
 
-MapVis.prototype.key = function(d) {
+function key (d) {
   return d.x + "," + d.y;
 }

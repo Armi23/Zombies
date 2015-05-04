@@ -3,9 +3,9 @@ TimeVis = function(_parentElement, _eventHandler){
   this.eventHandler = _eventHandler;
 
   // Define constants
-  this.margin = {top: 20, right: 50, bottom: 30, left: 100};
-  this.width = 600
-  this.height = 200
+  this.margin = {top: 20, right: 30, bottom: 30, left: 30};
+  this.width = 500
+  this.height = 100
 
   this.initVis();
 }
@@ -15,9 +15,7 @@ TimeVis = function(_parentElement, _eventHandler){
  * Method that sets up the SVG and the variables
  */
 TimeVis.prototype.initVis = function(){
-
   var that = this;
-
   this.svg = this.parentElement.append("svg")
     .attr("width", this.width + this.margin.left + this.margin.right)
     .attr("height", this.height + this.margin.top + this.margin.bottom)
@@ -25,7 +23,7 @@ TimeVis.prototype.initVis = function(){
     .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")")
 
   // creates axis and scales
-  this.x = d3.ordinal.scale()
+  this.x = d3.scale.linear()
     .range([0, this.width]);
 
   this.y = d3.scale.linear()
@@ -33,9 +31,9 @@ TimeVis.prototype.initVis = function(){
 
   this.area = d3.svg.area()
     .interpolate("monotone")
-    .x(function(d) { return that.x(d.time); })
+    .x(function(d, i) { return that.x(i); })
     .y0(this.height)
-    .y1(function(d) { return that.y(d.count); });
+    .y1(function(d, i) { return that.y(d); });
 
   // Add axes visual elements
   this.svg.append("g")
@@ -56,6 +54,8 @@ TimeVis.prototype.initVis = function(){
   */
 TimeVis.prototype.updateData = function(data){
   this.displayData = data;
+  console.log("update");
+  this.updateVis();
 }
 
 /**
@@ -63,23 +63,26 @@ TimeVis.prototype.updateData = function(data){
  * @param _options -- only needed if different kinds of updates are needed
  */
 TimeVis.prototype.updateVis = function(){
-  this.x.domain([0, this.displayData.length]);
-  this.y.domain(d3.extent(this.displayData, function(d) { return d.count; }));
+	var that = this;
+	console.log(d3.range(this.displayData.length));
+	console.log(that.displayData);
+  this.x.domain([0, that.displayData.length]);
+  this.y.domain([0 , d3.extent(that.displayData)[1]]);
 
   this.xAxis = d3.svg.axis()
-    .scale(this.x)
+    .scale(that.x)
     .orient("bottom");
 
   this.yAxis = d3.svg.axis()
-    .scale(this.y)
+    .scale(that.y)
     .orient("left");
 
   // updates axis
   this.svg.select(".x.axis")
-    .call(this.xAxis);
+    .call(that.xAxis);
 
   this.svg.select(".y.axis")
-    .call(this.yAxis)
+    .call(that.yAxis)
 
   // updates graph
   var path = this.svg.selectAll(".area")
