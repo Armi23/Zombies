@@ -4,8 +4,8 @@ TimeVis = function(_parentElement, _eventHandler){
 
   // Define constants
   this.margin = {top: 20, right: 30, bottom: 30, left: 30};
-  this.width = 500
-  this.height = 100
+  this.width = 600 - this.margin.left - this.margin.right;
+  this.height = 200 - this.margin.top - this.margin.bottom;
 
   this.initVis();
 }
@@ -47,6 +47,21 @@ TimeVis.prototype.initVis = function(){
     .attr("y", 6)
     .attr("dy", ".71em")
 
+  this.xAxis = d3.svg.axis()
+    .scale(that.x)
+    .orient("bottom");
+
+  this.yAxis = d3.svg.axis()
+    .scale(that.y)
+    .orient("left");
+
+  // updates axis
+  this.svg.select(".x.axis")
+    .call(that.xAxis);
+
+  this.svg.select(".y.axis")
+    .call(that.yAxis)
+
 }
 
 /**
@@ -64,18 +79,8 @@ TimeVis.prototype.updateData = function(data){
  */
 TimeVis.prototype.updateVis = function(){
 	var that = this;
-	console.log(d3.range(this.displayData.length));
-	console.log(that.displayData);
   this.x.domain([0, that.displayData.length]);
   this.y.domain([0 , d3.extent(that.displayData)[1]]);
-
-  this.xAxis = d3.svg.axis()
-    .scale(that.x)
-    .orient("bottom");
-
-  this.yAxis = d3.svg.axis()
-    .scale(that.y)
-    .orient("left");
 
   // updates axis
   this.svg.select(".x.axis")

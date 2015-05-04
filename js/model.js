@@ -12,13 +12,14 @@ function infectBlockCallback (geocode, lat, lng, options) {
 
 function infectBlockCountry (lat, lng, country, x_index, y_index) {
   var people_density = densities[country];
-  var block = {"S": people_density - 1, 
+  var block = {"S": people_density * 100 - 1, 
       "I": 1, 
       "R": 0, 
       "lat": lat, 
       "lng": lng, 
       "x": x_index, 
-      "y": y_index 
+      "y": y_index,
+      "country": country
   }
 
   if (!(x_index in list_of_blocks)) {
@@ -28,7 +29,6 @@ function infectBlockCountry (lat, lng, country, x_index, y_index) {
   infected_blocks.push([x_index, y_index])
   not_surrounded.push([x_index, y_index])
   list_of_blocks[x_index][y_index] = block;
-  // console.log("Block infected");
 }
 
 function infectBlock(fromBlock, dir, options) {
@@ -41,9 +41,6 @@ function infectBlock(fromBlock, dir, options) {
 // Runs one step of the SIR model on the block. Just returns on ocean block
 function SIR (coord) {
   block = list_of_blocks[coord[0]][coord[1]]
-  if (block.ocean == true) {
-    return;
-  } 
 
   S = block.S;
   I = block.I;
@@ -152,15 +149,15 @@ function newLatLng (lat1, lng1, brng) {
   var lng2 = 0
 
   if (brng[0] == "N") {
-    lat2 = lat1 + 1.0 / 111111
+    lat2 = lat1 + 10.0 / 111111
   } else if (brng[0] == "S") {
-    lat2 = lat1 - 1.0 / 111111
+    lat2 = lat1 - 10.0 / 111111
   }
 
   if (brng[0] == "E" || brng[1] == "E") {
-    lng2 = lng1 + 1.0 / (111111.0 * Math.cos(lat1)) 
+    lng2 = lng1 + 10.0 / (111111.0 * Math.cos(lat1)) 
   } else if (brng[0] == "W" || brng[1] == "W") {
-    lng2 = lng1 - 1.0 / (111111.0 * Math.cos(lat1))
+    lng2 = lng1 - 10.0 / (111111.0 * Math.cos(lat1))
   }
 
   return [lat1, lng2]

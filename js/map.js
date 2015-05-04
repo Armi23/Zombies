@@ -73,27 +73,21 @@ function draw(topo) {
   country
     .on("mousemove", function(d,i) {
 
+      country = d.properties.name
       var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
 
       tooltip.classed("hidden", false)
              .attr("style", "left:"+(mouse[0]+offsetL)+"px;top:"+(mouse[1]+offsetT)+"px")
-             .html(d.properties.name);
+             .html(country);
 
       })
       .on("mouseout",  function(d,i) {
         tooltip.classed("hidden", true);
+      })
+      .on("mouseover", function(d, i) {
+        h_country = d.properties.name;
+        $(MyEventHandler).trigger("hover", {"counts": country_data[h_country]})
       });
-
-
-  //EXAMPLE: adding some capitals from external CSV file
-  //  d3.csv("data/country-capitals.csv", function(err, capitals) {
-  //
-  //    capitals.forEach(function(i){
-  //      addpoint(i.CapitalLongitude, i.CapitalLatitude, i.CapitalName );
-  //    });
-  //
-  //  }); // WE DON'T NEED
-
 }
 
 
@@ -228,14 +222,24 @@ d3.csv("data/area.csv", function(csv) {
 
 var timeline_data = []
 var infected_counts = []
+var timeline_country_data = []
+var country_data = {}
 function processGrid (grid) {
   data = [];
   infected = 0;
+  country_data = {}
   for (var i in grid) {
     for (var j in grid[i]) {
       var block = grid[i][j];
       infected += block.I;
       data.push(block);
+      if (!(block.country in country_data)) {
+        country_data[block.country] = {"S": 0, "I": 0, "R": 0}
+      }
+
+      country_data[block.country].S += block.S
+      country_data[block.country].I += block.I
+      country_data[block.country].R += block.R
     }
   }
 
@@ -254,6 +258,7 @@ function colorCircle (d, i) {
 
 function mapVis (grid) {
   data = processGrid(grid)
+  console.log(data);
 
   var circles = g.selectAll("circle")
                   .data(data, key)
@@ -278,7 +283,9 @@ function mapVis (grid) {
             return colorCircle(d,i);
           })
 
-  $(MyEventHandler).trigger("timeTick", {"time": infected_counts})
+  $(MyEventHandler).trigger("timeTick", {
+                            "time": infected_counts,
+                            "counts": country_data[h_country]})
 
 }
 
