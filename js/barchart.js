@@ -25,7 +25,7 @@ BarChart = function(_parentElement, _data, _metaData){
 
     // TODO: define all constants here
 
-    this.init();
+    this.initVis();
 
 }
 

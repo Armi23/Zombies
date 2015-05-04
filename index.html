@@ -32,10 +32,6 @@
             </div>
             <div class="row">
                 <div id="timeline" class="col-md-6">
-                    <p>Timeline</p>
-                    <svg width="600" height="200">
-
-                    </svg>
                 </div>
                 <div id="barchart" class="col-md-6">
                     <p>Barchart</p>
@@ -57,6 +53,7 @@
             <script src="js/controls.js"></script>
             <script src="js/timeline.js"></script>
             <script src="js/geocoder.js"></script>
+            <script src="libs/jquery-2.1.1.min.js"></script>
             <script>
                 $(function(){ // this function is called after the HTML document is fully loaded
                     
@@ -69,9 +66,20 @@
                         
                         // create initializers barchart.js controls.js timeline.js
                         //TODO: Instantiate all Vis Objects here
+<<<<<<< HEAD
 //                        var controls = new Controls(d3.select("#controls"), var1, var2, MyEventHandler);
 //                        var barchart = new BarChart(d3.select("#barchart"), var1, var2);
 //                        var timeline = new Timeline(d3.select("#timeline"), var1, var2);
+=======
+                        var controls = new Controls(d3.select("#controls"), var1, var2, MyEventHandler);
+                        // var barchart = new BarChart(d3.select("#barchart"), var1, var2);
+                       var timeline = new TimeVis(d3.select("#timeline"), MyEventHandler);
+
+                       $(MyEventHandler).bind("timeTick", function(e, data) {
+                        timeline.updateData(data);
+                       })
+
+>>>>>>> 04fe499fa3a6f5b24f775318c91111f923a4d387
                     }
                     
 // Probably do not need since we can just call init                    
