@@ -3,7 +3,7 @@ main {
     margin: 0 auto;
 }
 
-.country, :active {
+.country, .country:active {
   stroke: #fff;
   stroke-width: 0.5px;
 }
@@ -74,4 +74,34 @@ div.tooltip {
 #barchart {
     border: solid 1px red; 
     margin-bottom: 10px;
+}
+
+.axis {
+  font: 9px sans-serif;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.axis .domain {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .3;
+  stroke-width: 10px;
+  stroke-linecap: round;
+}
+
+.axis .halo {
+  fill: none;
+  stroke: #ddd;
+  stroke-width: 8px;
+  stroke-linecap: round;
+}
+
+.slider .handle {
+  fill: #fff;
+  stroke: #000;
+  stroke-opacity: .5;
+  stroke-width: 1.25px;
+/*  cursor: crosshair;*/
 }
