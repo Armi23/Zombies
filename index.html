@@ -15,20 +15,10 @@
                 <div class="col-md-9">
                     <div id="container"></div>
                 </div>
-                <div id="controls" class="col-md-3">
-                    
-<!--
-                    <form name="controls" action="JavaScript:start()">
-                        <label for="">Variable 1</label>
-                        <input type="text" name="variables" id="male" value="male"><br>
-                        <label for="">Variable 2</label>
-                        <input type="text" name="variables" id="male" value="male"><br>
-                        <label for="">Variable 3</label>
-                        <input type="text" name="variables" id="male" value="male"><br>
-                        <input type="submit" value="Start">
-                    </form>
--->
-<!--               <input type="submit" value="Start" id="start">-->
+                <div>
+                    <p id="controls-heading">Controls</p>
+                    <div id="controls" class="col-md-3">
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -60,8 +50,6 @@
                 $(function(){ // this function is called after the HTML document is fully loaded
                     
                     // some variables
-                    var var1 = [];
-                    var var2 = {};
                     MyEventHandler = {};
                     
                     var init = function(){
