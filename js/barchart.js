@@ -2,10 +2,6 @@
 
 /**
  * Created by Hendrik Strobelt (hendrik.strobelt.com) on 1/28/15.
- */
-
-
-/*
  *
  * ======================================================
  * We follow the vis template of init - wrangle - update
@@ -20,6 +16,7 @@
  * @param _metaData -- the meta-data / data description object
  * @constructor
  */
+
 BarChart = function(_parentElement, _data, _metaData){
     this.parentElement = _parentElement;
     this.data = _data;
@@ -49,9 +46,6 @@ BarChart.prototype.initVis = function(){
     // xScale and xAxis stays constant
 
     this.yScale = d3.scale.linear().range([this.graphH,0]);
-
-
-
 
     this.xAxis = d3.svg.axis().scale(this.xScale);
     // xScale and xAxis stays constant
