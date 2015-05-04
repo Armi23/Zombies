@@ -22,8 +22,6 @@
         <div id="timeline" class="col-md-6">
         </div>
         <div id="barchart" class="col-md-6">
-
-          </svg>
         </div>
       </div>
     </main>
@@ -49,7 +47,6 @@
             
             var barchart = new BarChart(d3.select("#barchart"));
             var timeline = new TimeVis(d3.select("#timeline"), MyEventHandler);
-
              $(MyEventHandler).bind("timeTick", function(e, data) {
               timeline.updateData(data["time"]);
               barchart.updateData(data["counts"])

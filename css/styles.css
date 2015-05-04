@@ -60,7 +60,7 @@ div.tooltip {
     border-radius: 10px;
     height: 300px;
     width: 200px;
-    margin-top: 30px;
+/*    margin-top: 30px;*/
     color: darkslategray;
     background-color: lightgrey;
 }
@@ -114,5 +114,10 @@ div.tooltip {
 
 .text {
     font-size: 15px;
+
+}
+
+#controls-heading{
+    font-size: 20px;
 
 }
