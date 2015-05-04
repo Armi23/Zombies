@@ -1,76 +1,62 @@
 MapVis = function (_eventHandler) {
   this.eventHandler = _eventHandler;
 
+  this.width = document.getElementById('container').offsetWidth;
+  this.height = width / 2;
+
+  this.topo;
+
+  this.graticule = d3.geo.graticule();
+
+  this.tooltip = d3.select("#container").append("div").attr("class", "tooltip hidden");
+
   this.initVis();
 }
 
 MapVis.prototype.initVis = function() {
+  d3.select(window).on("resize", this.throttle);
 
-};
+  this.projection = d3.geo.mercator()
+    .translate([(this.width/2), (this.height/2)])
+    .scale( this.width / 2 / Math.PI);
 
-d3.select(window).on("resize", throttle);
+  this.path = d3.geo.path().projection(projection);
 
-var zoom = d3.behavior.zoom()
-  .scaleExtent([1, 9])
-  .on("zoom", move);
-
-
-var width = document.getElementById('container').offsetWidth;
-var height = width / 2;
-
-var topo,projection,path,svg,g;
-
-var graticule = d3.geo.graticule();
-
-var tooltip = d3.select("#container").append("div").attr("class", "tooltip hidden");
-
-setup(width,height);
-
-function setup(width,height){
-  projection = d3.geo.mercator()
-    .translate([(width/2), (height/2)])
-    .scale( width / 2 / Math.PI);
-
-  path = d3.geo.path().projection(projection);
-
-  svg = d3.select("#container").append("svg")
-      .attr("width", width)
-      .attr("height", height)
-      .call(zoom)
+  this.svg = d3.select("#container").append("svg")
+      .attr("width", this.width)
+      .attr("height", this.height)
+      .call(this.zoom)
       .on("click", click)
       .append("g");
 
-  g = svg.append("g");
-}
+  this.g = svg.append("g");
 
-d3.json("data/world-topo-min.json", function(error, world) {
+};
 
-  var countries = topojson.feature(world, world.objects.countries).features;
+MapVis.prototype.zoom = function() {
+  d3.behavior.zoom()
+  .scaleExtent([1, 9])
+  .on("zoom", move);
+};
 
-  topo = countries;
-  draw(topo);
+MapVis.prototype.draw = function() {
+  var that = this;
 
-});
-
-function draw(topo) {
-
-  svg.append("path")
-     .datum(graticule)
+  this.svg.append("path")
+     .datum(that.graticule)
      .attr("class", "graticule")
-     .attr("d", path);
+     .attr("d", that.path);
 
-
-  g.append("path")
+  this.g.append("path")
    .datum({type: "LineString", coordinates: [[-180, 0], [-90, 0], [0, 0], [90, 0], [180, 0]]})
    .attr("class", "equator")
    .attr("d", path);
 
-
-  var country = g.selectAll(".country").data(topo);
+  var country = g.selectAll(".country").data(that.topo);
 
   country.enter().insert("path")
       .attr("class", "country")
-      .attr("d", path)
+      .attr("d", that.path)
       .attr("id", function(d,i) { return d.id; })
       .attr("title", function(d,i) { return d.properties.name; })
       .style("fill", "green");        //function(d, i) { return d.properties.color; });
@@ -83,47 +69,47 @@ function draw(topo) {
   country
     .on("mousemove", function(d,i) {
 
-      var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
+      var mouse = d3.mouse(that.svg.node()).map( function(d) { return parseInt(d); } );
 
-      tooltip.classed("hidden", false)
+      that.tooltip.classed("hidden", false)
              .attr("style", "left:"+(mouse[0]+offsetL)+"px;top:"+(mouse[1]+offsetT)+"px")
              .html(d.properties.name);
 
       })
       .on("mouseout",  function(d,i) {
-        tooltip.classed("hidden", true);
+        that.tooltip.classed("hidden", true);
       });
 }
 
 
-function redraw() {
-  width = document.getElementById('container').offsetWidth;
-  height = width / 2;
+MapVis.prototype.draw = function () {
+  this.width = document.getElementById('container').offsetWidth;
+  this.height = width / 2;
   d3.select('svg').remove();
-  setup(width,height);
-  draw(topo);
+  this.initVis();
+  draw();
 }
 
 
-function move() {
+MapVis.prototype.move = function() {
 
   var t = d3.event.translate;
   var s = d3.event.scale;
   zscale = s;
-  var h = height/4;
+  var h = this.height/4;
 
 
   t[0] = Math.min(
-    (width/height)  * (s - 1),
+    (this.width/this.height)  * (s - 1),
     Math.max( width * (1 - s), t[0] )
   );
 
   t[1] = Math.min(
     h * (s - 1) + h * s,
-    Math.max(height  * (1 - s) - h * s, t[1])
+    Math.max(this.height  * (1 - s) - h * s, t[1])
   );
 
-  zoom.translate(t);
+  this.zoom.translate(t);
   g.attr("transform", "translate(" + t + ")scale(" + s + ")");
 
   //adjust the country hover stroke width based on zoom level
@@ -137,7 +123,7 @@ function move() {
 }
 
 var throttleTimer;
-function throttle() {
+MapVis.prototype.throttle = function() {
   window.clearTimeout(throttleTimer);
     throttleTimer = window.setTimeout(function() {
       redraw();
@@ -146,35 +132,35 @@ function throttle() {
 
 
 //geo translation on mouse click in map
-function click() {
+MapVis.prototype.click = function() {
   var latlon = projection.invert(d3.mouse(this));
   var country = clickCountry(latlon[1], latlon[0]);
 }
 
 
 //function to add points and text to the map (used in plotting capitals)
-function addpoint(lat,lon,text) {
-  var gpoint = g.append("g").attr("class", "gpoint");
-  var x = projection([lon, lat])[0];
-  var y = projection([lon, lat])[1];
+// function addpoint(lat,lon,text) {
+//   var gpoint = g.append("g").attr("class", "gpoint");
+//   var x = projection([lon, lat])[0];
+//   var y = projection([lon, lat])[1];
 
-  gpoint.append("svg:circle")
-        .attr("cx", x)
-        .attr("cy", y)
-        .attr("class","point")
-        .attr("r", 10);
+//   gpoint.append("svg:circle")
+//         .attr("cx", x)
+//         .attr("cy", y)
+//         .attr("class","point")
+//         .attr("r", 10);
 
-  //conditional in case a point has no associated text
-  if(text.length>0){
+//   //conditional in case a point has no associated text
+//   if(text.length>0){
 
-    gpoint.append("text")
-          .attr("x", x+2)
-          .attr("y", y+2)
-          .attr("class","text")
-          .text(text);
-  }
+//     gpoint.append("text")
+//           .attr("x", x+2)
+//           .attr("y", y+2)
+//           .attr("class","text")
+//           .text(text);
+//   }
 
-}
+// }
 
 var year = 2013 // Latest density models use densities from 2013
 var country_index = 5 // For google reverse geocoding
@@ -215,19 +201,26 @@ $(function() {
         migrations[out_country][key] = csv[i][key]
       }
     };
-  // console.log(migrations);
-});
+  });
 
-d3.csv("data/area.csv", function(csv) {
-  for (var i = 0; i < csv.length; i++) {
-    areas[csv[i]["Country Name"]] = csv[i][year]
-  };
-});
+  d3.csv("data/area.csv", function(csv) {
+    for (var i = 0; i < csv.length; i++) {
+      areas[csv[i]["Country Name"]] = csv[i][year]
+    };
+  });
+  d3.json("data/world-topo-min.json", function(error, world) {
+
+    var countries = topojson.feature(world, world.objects.countries).features;
+
+    this.topo = countries;
+    draw();
+
+  });
 })
 
 var timeline_data = []
 var infected_counts = []
-function processGrid (grid) {
+MapVis.prototype.processGrid = function(grid) {
   data = [];
   infected = 0;
   for (var i in grid) {
@@ -243,7 +236,7 @@ function processGrid (grid) {
   return data;
 }
 
-function colorCircle (d, i) {
+MapVis.prototype.colorCircle = function(d, i) {
   if (d.I > d.R) {
     return "#ff0000"
   }
@@ -251,10 +244,10 @@ function colorCircle (d, i) {
   return "#0000ff";
 }
 
-function mapVis (grid) {
+MapVis.prototype.mapVis = function(grid) {
   data = processGrid(grid)
 
-  var circles = g.selectAll("circle")
+  var circles = this.g.selectAll("circle")
                   .data(data, key)
 
   circles.enter()
