@@ -1,3 +1,13 @@
+MapVis = function (_eventHandler) {
+  this.eventHandler = _eventHandler;
+
+  this.initVis();
+}
+
+MapVis.prototype.initVis = function() {
+
+};
+
 d3.select(window).on("resize", throttle);
 
 var zoom = d3.behavior.zoom()
@@ -83,17 +93,6 @@ function draw(topo) {
       .on("mouseout",  function(d,i) {
         tooltip.classed("hidden", true);
       });
-
-
-  //EXAMPLE: adding some capitals from external CSV file
-  //  d3.csv("data/country-capitals.csv", function(err, capitals) {
-  //
-  //    capitals.forEach(function(i){
-  //      addpoint(i.CapitalLongitude, i.CapitalLatitude, i.CapitalName );
-  //    });
-  //
-  //  }); // WE DON'T NEED
-
 }
 
 
@@ -226,15 +225,21 @@ d3.csv("data/area.csv", function(csv) {
 });
 })
 
+var timeline_data = []
+var infected_counts = []
 function processGrid (grid) {
-  data = []
+  data = [];
+  infected = 0;
   for (var i in grid) {
     for (var j in grid[i]) {
-      var block = grid[i][j]
-      data.push(block)
+      var block = grid[i][j];
+      infected += block.I;
+      data.push(block);
     }
   }
 
+  timeline_data.push(data);
+  infected_counts.push(infected)
   return data;
 }
 
@@ -271,8 +276,6 @@ function mapVis (grid) {
           .attr("fill", function(d, i) {
             return colorCircle(d,i);
           })
-
-
 }
 
 function key (d) {

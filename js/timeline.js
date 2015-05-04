@@ -25,7 +25,7 @@ TimeVis.prototype.initVis = function(){
     .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")")
 
   // creates axis and scales
-  this.x = d3.time.scale()
+  this.x = d3.ordinal.scale()
     .range([0, this.width]);
 
   this.y = d3.scale.linear()
@@ -54,12 +54,8 @@ TimeVis.prototype.initVis = function(){
 /**
  * Method to wrangle the data. In this case it takes an options object
   */
-TimeVis.prototype.wrangleData= function(){
-
-  // displayData should hold the data which is visualized
-  // pretty simple in this case -- no modifications needed
-  this.displayData = this.data;
-
+TimeVis.prototype.updateData = function(data){
+  this.displayData = data;
 }
 
 /**
@@ -67,7 +63,7 @@ TimeVis.prototype.wrangleData= function(){
  * @param _options -- only needed if different kinds of updates are needed
  */
 TimeVis.prototype.updateVis = function(){
-  this.x.domain(d3.extent(this.displayData, function(d) { return d.time; }));
+  this.x.domain([0, this.displayData.length]);
   this.y.domain(d3.extent(this.displayData, function(d) { return d.count; }));
 
   this.xAxis = d3.svg.axis()
