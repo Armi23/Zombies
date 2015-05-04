@@ -10,6 +10,15 @@ MapVis = function (_eventHandler) {
 
   this.tooltip = d3.select("#container").append("div").attr("class", "tooltip hidden");
 
+  d3.json("data/world-topo-min.json", function(error, world) {
+
+    var countries = topojson.feature(world, world.objects.countries).features;
+
+    this.topo = countries;
+    this.draw();
+
+  });
+  
   this.initVis();
 }
 
@@ -87,7 +96,7 @@ MapVis.prototype.draw = function () {
   this.height = width / 2;
   d3.select('svg').remove();
   this.initVis();
-  draw();
+  this.draw();
 }
 
 
@@ -126,7 +135,7 @@ var throttleTimer;
 MapVis.prototype.throttle = function() {
   window.clearTimeout(throttleTimer);
     throttleTimer = window.setTimeout(function() {
-      redraw();
+      this.redraw();
     }, 200);
 }
 
@@ -162,61 +171,7 @@ MapVis.prototype.click = function() {
 
 // }
 
-var year = 2013 // Latest density models use densities from 2013
-var country_index = 5 // For google reverse geocoding
-var airports = {}
-var densities = {}
-var migrations = {}
-var areas = {}
 
-$(function() {
-  d3.csv("data/airports.dat", function(csv) {
-    for (var i = 0; i < csv.length; i++) {
-      if (!(csv[i].country in airports)) {
-        airports[csv[i].country] = []
-      }
-
-      new_aiport = {
-        "lat": csv[i].lat,
-        "lng": csv[i].lng,
-        "id": csv[i].id
-      }
-
-      airports[csv[i].country].push(new_aiport)
-    };
-  });
-
-  d3.csv("data/densities.csv", function(csv) {
-    for (var i = 0; i < csv.length; i++) {
-      densities[csv[i]["Country Name"]] = csv[i][year]
-    };
-  });
-
-  d3.csv("data/migration.csv", function(csv) {
-    for (var i = 0; i < csv.length; i++) {
-      out_country = csv[i]["Source"]
-      migrations[out_country] = {}
-
-      for (var key in csv[i]) {
-        migrations[out_country][key] = csv[i][key]
-      }
-    };
-  });
-
-  d3.csv("data/area.csv", function(csv) {
-    for (var i = 0; i < csv.length; i++) {
-      areas[csv[i]["Country Name"]] = csv[i][year]
-    };
-  });
-  d3.json("data/world-topo-min.json", function(error, world) {
-
-    var countries = topojson.feature(world, world.objects.countries).features;
-
-    this.topo = countries;
-    draw();
-
-  });
-})
 
 var timeline_data = []
 var infected_counts = []
@@ -248,7 +203,7 @@ MapVis.prototype.mapVis = function(grid) {
   data = processGrid(grid)
 
   var circles = this.g.selectAll("circle")
-                  .data(data, key)
+                  .data(data, this.key)
 
   circles.enter()
           .append("circle")
@@ -271,6 +226,6 @@ MapVis.prototype.mapVis = function(grid) {
           })
 }
 
-function key (d) {
+MapVis.prototype.key = function(d) {
   return d.x + "," + d.y;
 }
