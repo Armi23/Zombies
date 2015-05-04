@@ -40,24 +40,24 @@ Controls.prototype.addSlider = function(svg){
     // TODO: Think of what is domain and what is range for the y axis slider !!
     var sliderScale = d3.scale.linear().domain([1,.1]).range([200,0])
 
-//    var sliderDragged = function(){
-//        var value = Math.max(0, Math.min(200,d3.event.y));
-//
-//        var sliderValue = sliderScale.invert(value);
-//
-//        // TODO: do something here to deform the y scale
-//        that.yScale.exponent(sliderValue);
-//
-//
-//        d3.select(this)
-//            .attr("y", function () {
-//                return sliderScale(sliderValue);
-//            })
-//
-//        that.updateVis({});
-//    }
-//    var sliderDragBehaviour = d3.behavior.drag()
-//        .on("drag", sliderDragged)
+   var sliderDragged = function(){
+       var value = Math.max(0, Math.min(200,d3.event.y));
+
+       var sliderValue = sliderScale.invert(value);
+
+       // TODO: do something here to deform the y scale
+       that.yScale.exponent(sliderValue);
+
+
+       d3.select(this)
+           .attr("y", function () {
+               return sliderScale(sliderValue);
+           })
+
+       that.updateVis({});
+   }
+   var sliderDragBehaviour = d3.behavior.drag()
+       .on("drag", sliderDragged)
 
     var sliderGroup = svg.append("g").attr({
         class:"sliderGroup",

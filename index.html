@@ -33,10 +33,6 @@
             </div>
             <div class="row">
                 <div id="timeline" class="col-md-6">
-                    <p>Timeline</p>
-                    <svg width="600" height="200">
-
-                    </svg>
                 </div>
                 <div id="barchart" class="col-md-6">
                     <p>Barchart</p>
@@ -71,8 +67,8 @@
                         // create initializers barchart.js controls.js timeline.js
                         //TODO: Instantiate all Vis Objects here
                         var controls = new Controls(d3.select("#controls"), var1, var2, MyEventHandler);
-                        var barchart = new BarChart(d3.select("#barchart"), var1, var2);
-//                        var timeline = new Timeline(d3.select("#timeline"), var1, var2);
+                        // var barchart = new BarChart(d3.select("#barchart"), var1, var2);
+                       var timeline = new TimeVis(d3.select("#timeline"), MyEventHandler);
                     }
                     
 // Probably do not need since we can just call init                    
