@@ -2,7 +2,7 @@
 
 
 var width = 200;
-var height = 300;
+var height = 240;
 var margin = 40;
 
 var x = d3.scale.linear()
@@ -32,9 +32,17 @@ control_svg.append("g")
   .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
     .attr("class", "halo");
 
+
+
 var slider_s = control_svg.append("g")
     .attr("class", "slider")
     .call(brush_s);
+
+var text_s = control_svg.append("text")
+    .attr("class", "text")
+    .text("Define variable S: ")
+    .attr("x", "0")
+    .attr("y", "25");
 
 slider_s.selectAll(".extent,.resize")
     .remove();
@@ -79,7 +87,7 @@ var brush_i = d3.svg.brush()
 
 control_svg.append("g")
     .attr("class", "x axis")
-    .attr("transform", "translate(0," + height / 2.5 + ")")
+    .attr("transform", "translate(0," + height / 2 + ")")
     .call(d3.svg.axis()
       .scale(x)
       .orient("bottom")
@@ -94,6 +102,12 @@ var slider_i = control_svg.append("g")
     .attr("class", "slider")
     .call(brush_i);
 
+var text_i = control_svg.append("text")
+    .attr("class", "text")
+    .text("Define variable I: ")
+    .attr("x", "0")
+    .attr("y", "100");
+
 slider_i.selectAll(".extent,.resize")
     .remove();
 
@@ -102,7 +116,7 @@ slider_i.selectAll(".extent,.resize")
 
 var handle_i = slider_i.append("circle")
     .attr("class", "handle")
-    .attr("transform", "translate(0," + height / 2.5 + ")")
+    .attr("transform", "translate(0," + height / 2 + ")")
     .attr("r", 9);
 
 slider_i
@@ -136,7 +150,7 @@ var brush_r = d3.svg.brush()
 
 control_svg.append("g")
     .attr("class", "x axis")
-    .attr("transform", "translate(0," + height / 1.7 + ")")
+    .attr("transform", "translate(0," + height / 1.2 + ")")
     .call(d3.svg.axis()
       .scale(x)
       .orient("bottom")
@@ -151,6 +165,13 @@ var slider_r = control_svg.append("g")
     .attr("class", "slider")
     .call(brush_r);
 
+var text_r = control_svg.append("text")
+    .attr("class", "text")
+    .text("Define variable R: ")
+    .attr("x", "0")
+    .attr("y", "175");
+
+
 slider_r.selectAll(".extent,.resize")
     .remove();
 
@@ -159,7 +180,7 @@ slider_r.selectAll(".extent,.resize")
 
 var handle_r = slider_r.append("circle")
     .attr("class", "handle")
-    .attr("transform", "translate(0," + height / 1.7 + ")")
+    .attr("transform", "translate(0," + height / 1.2 + ")")
     .attr("r", 9);
 
 slider_r
@@ -182,3 +203,10 @@ function brushed_r() {
     
     console.log("Sliding R: ", value_r);
 }
+
+$("#controls").append($("<input>").attr("type","submit").attr( "value","Start").attr("id","start"));
+
+
+$("#start").click(function(){
+    console.log("Start!")
+})
