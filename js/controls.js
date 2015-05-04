@@ -204,9 +204,15 @@ function brushed_r() {
     console.log("Sliding R: ", value_r);
 }
 
-$("#controls").append($("<input>").attr("type","submit").attr( "value","Start").attr("id","start"));
+$("#controls").append($("<input>").attr("type","submit").attr("value","Start").attr("id","start"));
 
-
+var playing = false;
 $("#start").click(function(){
-    console.log("Start!")
+  if (!playing) {
+    runAnimation();
+  } else {
+    clearInterval(animation_interval)
+    playing = false;
+    $("#start").prop("value", "Play");
+  }
 })

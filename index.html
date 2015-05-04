@@ -49,11 +49,11 @@
             var timeline = new TimeVis(d3.select("#timeline"), MyEventHandler);
              $(MyEventHandler).bind("timeTick", function(e, data) {
               timeline.updateData(data["time"]);
-              barchart.updateData(data["counts"])
+              barchart.updateData(data["counts"], data["country"])
              });
 
              $(MyEventHandler).bind("hover", function(e, data) {
-              barchart.updateData(data["counts"])
+              barchart.updateData(data["counts"], data["country"])
              })
 
           }

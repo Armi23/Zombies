@@ -77,9 +77,15 @@ function launchModel (geocode, lat, lng) {
   // Click location is site of first Zombie
   var starter_block = infectBlockCountry(lat, lng, country, 0, 0)
 
-  // Run the steps of the simulation
+  runAnimation();
+}
+
+var animation_interval;
+function runAnimation () {
   var timesRun = 0
-  var interval = window.setInterval(function() {
+  playing = true;
+  $("#start").prop("value", "Pause");
+  animation_interval = window.setInterval(function() {
     for (var j = 0; j < infected_blocks.length; j++) {
       SIR(infected_blocks[j])
     };
@@ -87,9 +93,9 @@ function launchModel (geocode, lat, lng) {
     mapVis(list_of_blocks);
 
     timesRun += 1
-    // console.log("Times run: " + timesRun);
+    console.log("Times run: " + timesRun);
     if (timesRun >= 100) {
-      clearInterval(interval);
+      clearInterval(animation_interval);
     }
 
   }, 2000)
@@ -114,7 +120,6 @@ function vulnerable_neighbors (x, y) {
 
 // Stochastically have a zombie spread into an uninfected neighboring block
 function spread () {
-  console.log("spread!");
 
   // Select number of zombies that will spread
   // spreading_zombies = Math.floor(Math.random() * not_surrounded.length) + 1;

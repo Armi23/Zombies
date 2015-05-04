@@ -69,7 +69,6 @@ TimeVis.prototype.initVis = function(){
   */
 TimeVis.prototype.updateData = function(data){
   this.displayData = data;
-  console.log("update");
   this.updateVis();
 }
 

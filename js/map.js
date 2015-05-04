@@ -86,7 +86,11 @@ function draw(topo) {
       })
       .on("mouseover", function(d, i) {
         h_country = d.properties.name;
-        $(MyEventHandler).trigger("hover", {"counts": country_data[h_country]})
+        $(MyEventHandler).trigger("hover", 
+                  {
+                    "counts": country_data[h_country],
+                    "country": h_country
+                  })
       });
 }
 
@@ -142,8 +146,10 @@ function throttle() {
 
 //geo translation on mouse click in map
 function click() {
-  var latlon = projection.invert(d3.mouse(this));
-  var country = clickCountry(latlon[1], latlon[0]);
+  if (list_of_blocks[0] == undefined) {
+    var latlon = projection.invert(d3.mouse(this));
+    var country = clickCountry(latlon[1], latlon[0]);
+  }
 }
 
 
@@ -258,8 +264,6 @@ function colorCircle (d, i) {
 
 function mapVis (grid) {
   data = processGrid(grid)
-  console.log(data);
-
   var circles = g.selectAll("circle")
                   .data(data, key)
 
@@ -283,9 +287,12 @@ function mapVis (grid) {
             return colorCircle(d,i);
           })
 
-  $(MyEventHandler).trigger("timeTick", {
+  $(MyEventHandler).trigger("timeTick", 
+                          {
                             "time": infected_counts,
-                            "counts": country_data[h_country]})
+                            "counts": country_data[h_country], 
+                            "country": h_country
+                          })
 
 }
 
