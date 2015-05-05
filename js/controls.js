@@ -36,8 +36,6 @@ control_svg.append("g")
   .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
     .attr("class", "halo");
 
-
-
 var slider_s = control_svg.append("g")
     .attr("class", "slider")
     .call(brush_s);
