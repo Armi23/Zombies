@@ -139,7 +139,7 @@ function vulnerable_neighbors (x, y) {
 function spread () {
 
   // Select number of zombies that will spread. Limited by Google Maps API
-  spreading_zombies = Math.floor(Math.random() * 3);
+  spreading_zombies = Math.floor(Math.random() * 10);
   for (var i = 0; i < spreading_zombies; i++) {
 
     // Select a block to spread from
