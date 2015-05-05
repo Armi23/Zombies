@@ -47,19 +47,19 @@
             
             var barchart = new BarChart(d3.select("#barchart"));
             var timeline = new TimeVis(d3.select("#timeline"), MyEventHandler);
-             $(MyEventHandler).bind("timeTick", function(e, data) {
+            
+            $(MyEventHandler).bind("timeTick", function(e, data) {
               timeline.updateData(data["time"]);
               barchart.updateData(data["counts"], data["country"])
-             });
+            });
 
-             $(MyEventHandler).bind("hover", function(e, data) {
+            $(MyEventHandler).bind("hover", function(e, data) {
               barchart.updateData(data["counts"], data["country"])
-             })
-
-          }
+            });
+          };
           
           init();
-          })
+        })
       </script>
     </footer>
   </body>

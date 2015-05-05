@@ -174,11 +174,11 @@ function spread () {
     var export_vals = migrations[country];
 
     // get random number r in range 0 to sum
-    var r = Math.random() * export_vals["sum"]
+    var r = Math.floor(Math.random() * export_vals["sum"])
 
     var new_country;
     for (var key in export_vals) {
-      if (key == "sum" || key == "Source" || key == "World"  || key == "Other South"   || key == "Other North") {
+      if (key == "sum" ) {
         continue;
       }
 
@@ -194,7 +194,6 @@ function spread () {
       continue;
     }
 
-    console.log("Country", new_country);
     var airport_index = Math.floor(Math.random() * airports[new_country].length);
     var airport = airports[new_country][airport_index];
     infectBlockCountry(airport.lat, airport.lng, new_country, origin, origin);

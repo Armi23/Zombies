@@ -214,6 +214,10 @@ $(function() {
       migrations[out_country]["sum"] = 0
 
       for (var key in csv[i]) {
+        if (key == "sum" || key == "Source" || key == "World"  || key == "Other South"   || key == "Other North") {
+          continue;
+        }
+
         migrations[out_country][key] = csv[i][key]
         var num = parseFloat(csv[i][key])
         if (!isNaN(num)) {
@@ -273,16 +277,20 @@ function mapVis (grid) {
   circles.enter()
           .append("circle")
           .attr("cx", function(d, i) {
+            console.log("Lat: ", d.lat);
+            console.log("Long: ", d.lng);
+            console.log("cx: ", projection([d.lng, d.lat])[0]);
             return projection([d.lng, d.lat])[0];
           })
           .attr("cy", function(d, i) {
+            console.log("cy: ", projection([d.lng, d.lat])[1]);
             return projection([d.lng, d.lat])[1];
           })
           .attr("r", 1)
           .attr("fill", function(d, i) {
             return colorCircle(d,i);
           })
-          .style("opacity", 0.3)
+          .style("opacity", 0.5)
 
   circles.transition()
           .duration(5)
