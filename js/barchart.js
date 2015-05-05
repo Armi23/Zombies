@@ -122,10 +122,10 @@ BarChart.prototype.updateVis = function(){
       })
       .style("fill", function(d, i) {
         if (i == 0) {
-          return "#ff0000"
+          return "#00ff00"
         }
         if (i == 1) {
-          return "#00ff00"
+          return "#ff0000"
         }
 
         return "#0000ff"

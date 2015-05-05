@@ -1,10 +1,11 @@
 // Run SIR Model here within blocks
 R = 6371.0
-alpha = 0.3
+alpha = 0.6
 infected_blocks = []
 not_surrounded = []
 list_of_blocks = {}
 var dim = 20.0
+var origin = 0;
 
 
 function infectBlockCallback (geocode, lat, lng, options) {
@@ -28,8 +29,8 @@ function infectBlockCountry (lat, lng, country, x_index, y_index) {
     list_of_blocks[x_index] = {};
   }
 
-  infected_blocks.push([x_index, y_index])
-  not_surrounded.push([x_index, y_index])
+  infected_blocks.push([x_index, y_index, country])
+  not_surrounded.push([x_index, y_index, country])
   list_of_blocks[x_index][y_index] = block;
 }
 
@@ -41,7 +42,8 @@ function infectBlock(fromBlock, dir, options) {
 };
 
 // Runs one step of the SIR model on the block. Just returns on ocean block
-function SIR (coord) {
+function SIR (j) {
+  coord = infected_blocks[j]
   block = list_of_blocks[coord[0]][coord[1]]
 
   S = block.S;
@@ -52,6 +54,18 @@ function SIR (coord) {
   block.S -= S * I / N;
   block.I += (1 - alpha) * S * I / N ;
   block.R += alpha * S * I / N;
+
+  block.S = Math.max(0, block.S);
+  block.I = Math.max(0, block.I);
+  block.R = Math.max(0, block.R);
+
+  console.log("S", block.S);
+  console.log("I", block.I);
+  console.log("R", block.R);
+
+  if (block.I <= 0) {
+    infected_blocks.splice(j, 1);
+  }
 }
 
 function getCountry (geocode) {
@@ -77,7 +91,8 @@ function launchModel (geocode, lat, lng) {
   var country = getCountry(geocode)
 
   // Click location is site of first Zombie
-  var starter_block = infectBlockCountry(lat, lng, country, 0, 0)
+  var starter_block = infectBlockCountry(lat, lng, country, origin, origin)
+  origin += 100;
 
   runAnimation();
 }
@@ -89,7 +104,7 @@ function runAnimation () {
   $("#start").prop("value", "Pause");
   animation_interval = window.setInterval(function() {
     for (var j = 0; j < infected_blocks.length; j++) {
-      SIR(infected_blocks[j])
+      SIR(j)
     };
     spread();
     mapVis(list_of_blocks);
@@ -100,7 +115,7 @@ function runAnimation () {
       clearInterval(animation_interval);
     }
 
-  }, 2000)
+  }, 5000)
 }
 
 // Find all the locations around this block that are not infected
@@ -125,17 +140,17 @@ function spread () {
 
   // Select number of zombies that will spread
   // spreading_zombies = Math.floor(Math.random() * not_surrounded.length) + 1;
-  spreading_zombies = 1;
+  spreading_zombies = Math.floor(Math.random() * 3);
   for (var i = 0; i < spreading_zombies; i++) {
 
     // Select a block to spread from
-    point_index = Math.floor(Math.random() * not_surrounded.length)
-    point = not_surrounded[point_index]
+    var point_index = Math.floor(Math.random() * not_surrounded.length);
+    var point = not_surrounded[point_index];
 
     // Get a list of uninfected neighbors and select one of them randomly
-    vulnerable_list = vulnerable_neighbors(point[0], point[1])
-    targetIndex = Math.floor(Math.random() * vulnerable_list.length)
-    target = vulnerable_list[targetIndex]
+    var vulnerable_list = vulnerable_neighbors(point[0], point[1]);
+    var targetIndex = Math.floor(Math.random() * vulnerable_list.length);
+    var target = vulnerable_list[targetIndex];
 
     // If this block is surrounded by infected, remove it. 
     if (vulnerable_list.length == 1) {
@@ -147,6 +162,43 @@ function spread () {
 
     // Infect targeted block
     infectBlock(list_of_blocks[point[0]][point[1]], target[2], [target[0], target[1]])
+  };
+
+  flying_zombies = Math.floor(Math.random() * 4);
+  for (var i = 0; i < flying_zombies; i++) {
+    // Select a block to spread from
+    var point_index = Math.floor(Math.random() * not_surrounded.length);
+    var point = not_surrounded[point_index];
+    var country = point[2];
+
+    // Get migration patterns for countries
+    var export_vals = migrations[country];
+
+    // get random number r in range 0 to sum
+    var r = Math.random() * export_vals["sum"]
+
+    var new_country;
+    for (var key in export_vals) {
+      if (key == "sum" || key == "Source" || key == "World"  || key == "Other South"   || key == "Other North") {
+        continue;
+      }
+
+      r -= export_vals[key];
+      new_country = key;
+
+      if (r <= 0) {
+        break;
+      } 
+    }
+
+    if (airports[new_country] == undefined || airports[new_country].length < 1) {
+      continue;
+    }
+
+    var airport_index = Math.floor(Math.random() * airports[new_country].length);
+    var airport = airports[new_country][airport_index];
+    infectBlockCountry(airport.lat, airport.lng, new_country, origin, origin);
+    origin += 100;
   };
 }
 
@@ -167,8 +219,6 @@ function newLatLng (lat1, lng1, brng) {
     lng2 = lng1 - dim / (111.320 * Math.cos(lat1))
   }
 
-  console.log("From: ", lat1, ", ", lng1);
-  console.log("To: ", lat2, ", ", lng2);
   return [lat2, lng2]
 }
 
