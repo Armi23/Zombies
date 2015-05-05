@@ -214,6 +214,10 @@ $(function() {
       migrations[out_country]["sum"] = 0
 
       for (var key in csv[i]) {
+        if (key == "sum" || key == "Source" || key == "World"  || key == "Other South"   || key == "Other North") {
+          continue;
+        }
+
         migrations[out_country][key] = csv[i][key]
         var num = parseFloat(csv[i][key])
         if (!isNaN(num)) {

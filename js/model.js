@@ -174,11 +174,12 @@ function spread () {
     var export_vals = migrations[country];
 
     // get random number r in range 0 to sum
-    var r = Math.random() * export_vals["sum"]
+    var r = Math.floor(Math.random() * export_vals["sum"])
+    console.log(r);
 
     var new_country;
     for (var key in export_vals) {
-      if (key == "sum" || key == "Source" || key == "World"  || key == "Other South"   || key == "Other North") {
+      if (key == "sum" ) {
         continue;
       }
 
