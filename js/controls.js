@@ -1,13 +1,13 @@
 // This is where we will edit the parameters of the disease. We will have some presets for different diseases but we will also allow users to change these manually
 
 
-var width = 200;
-var height = 240;
+var c_width = 200;
+var c_height = 240;
 var margin = 40;
 
 var x = d3.scale.linear()
     .domain([0, 1])
-    .range([10, width-margin])
+    .range([10, c_width-margin])
     .clamp(true);
 
 var brush_s = d3.svg.brush()
@@ -16,12 +16,12 @@ var brush_s = d3.svg.brush()
     .on("brush", brushed_s);
 
 var control_svg = d3.select("#controls").append("svg")
-    .attr("width", width)
-    .attr("height", height);
+    .attr("width", c_width)
+    .attr("height", c_height);
 
 control_svg.append("g")
     .attr("class", "x axis")
-    .attr("transform", "translate(0," + height / 5 + ")")
+    .attr("transform", "translate(0," + c_height / 5 + ")")
     .call(d3.svg.axis()
       .scale(x)
       .orient("bottom")
@@ -40,7 +40,7 @@ var slider_s = control_svg.append("g")
 
 var text_s = control_svg.append("text")
     .attr("class", "text")
-    .text("Define variable S: ")
+    .text("Define Beta: ")
     .attr("x", "0")
     .attr("y", "25");
 
@@ -52,7 +52,7 @@ slider_s.selectAll(".extent,.resize")
 
 var handle_s = slider_s.append("circle")
     .attr("class", "handle")
-    .attr("transform", "translate(0," + height / 5 + ")")
+    .attr("transform", "translate(0," + c_height / 5 + ")")
     .attr("r", 9);
 
 slider_s
@@ -73,7 +73,6 @@ function brushed_s() {
   handle_s.attr("cx", x(value_s));
 //  d3.select("body").style("background-color", d3.hsl(value, .8, .8));
     
-    console.log("Sliding S: ", value_s);
     beta = value_s;
 }
 
@@ -88,7 +87,7 @@ var brush_i = d3.svg.brush()
 
 control_svg.append("g")
     .attr("class", "x axis")
-    .attr("transform", "translate(0," + height / 2 + ")")
+    .attr("transform", "translate(0," + c_height / 2 + ")")
     .call(d3.svg.axis()
       .scale(x)
       .orient("bottom")
@@ -105,7 +104,7 @@ var slider_i = control_svg.append("g")
 
 var text_i = control_svg.append("text")
     .attr("class", "text")
-    .text("Define variable I: ")
+    .text("Define the kill rate: ")
     .attr("x", "0")
     .attr("y", "100");
 
@@ -117,7 +116,7 @@ slider_i.selectAll(".extent,.resize")
 
 var handle_i = slider_i.append("circle")
     .attr("class", "handle")
-    .attr("transform", "translate(0," + height / 2 + ")")
+    .attr("transform", "translate(0," + c_height / 2 + ")")
     .attr("r", 9);
 
 slider_i
@@ -143,7 +142,7 @@ function brushed_i() {
 }
 
 
-// r slider
+// Time slider
 
 var brush_r = d3.svg.brush()
     .x(x)
@@ -152,7 +151,7 @@ var brush_r = d3.svg.brush()
 
 control_svg.append("g")
     .attr("class", "x axis")
-    .attr("transform", "translate(0," + height / 1.2 + ")")
+    .attr("transform", "translate(0," + c_height / 1.2 + ")")
     .call(d3.svg.axis()
       .scale(x)
       .orient("bottom")
@@ -169,7 +168,7 @@ var slider_r = control_svg.append("g")
 
 var text_r = control_svg.append("text")
     .attr("class", "text")
-    .text("Define variable R: ")
+    .text("Define number of steps: ")
     .attr("x", "0")
     .attr("y", "175");
 
@@ -182,7 +181,7 @@ slider_r.selectAll(".extent,.resize")
 
 var handle_r = slider_r.append("circle")
     .attr("class", "handle")
-    .attr("transform", "translate(0," + height / 1.2 + ")")
+    .attr("transform", "translate(0," + c_height / 1.2 + ")")
     .attr("r", 9);
 
 slider_r

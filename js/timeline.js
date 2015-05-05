@@ -4,7 +4,7 @@ TimeVis = function(_parentElement, _eventHandler){
 
   // Define constants
   this.margin = {top: 20, right: 30, bottom: 30, left: 30};
-  this.width = 600 - this.margin.left - this.margin.right;
+  this.width = 500 - this.margin.left - this.margin.right;
   this.height = 200 - this.margin.top - this.margin.bottom;
 
   this.initVis();
@@ -37,11 +37,11 @@ TimeVis.prototype.initVis = function(){
 
   // Add axes visual elements
   this.svg.append("g")
-    .attr("class", "x axis")
+    .attr("class", "x-axis")
     .attr("transform", "translate(0," + this.height + ")")
 
   this.svg.append("g")
-    .attr("class", "y axis")
+    .attr("class", "y-axis")
     .append("text")
     .attr("transform", "rotate(-90)")
     .attr("y", 6)
@@ -56,10 +56,10 @@ TimeVis.prototype.initVis = function(){
     .orient("left");
 
   // updates axis
-  this.svg.select(".x.axis")
+  this.svg.select(".x-axis")
     .call(that.xAxis);
 
-  this.svg.select(".y.axis")
+  this.svg.select(".y-axis")
     .call(that.yAxis)
 
 }
@@ -82,10 +82,10 @@ TimeVis.prototype.updateVis = function(){
   this.y.domain([0 , d3.extent(that.displayData)[1]]);
 
   // updates axis
-  this.svg.select(".x.axis")
+  this.svg.select(".x-axis")
     .call(that.xAxis);
 
-  this.svg.select(".y.axis")
+  this.svg.select(".y-axis")
     .call(that.yAxis)
 
   // updates graph
