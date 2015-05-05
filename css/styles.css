@@ -63,22 +63,22 @@ div.tooltip {
     background-color: lightgrey;
 }
 
-#timeline {
-    margin-bottom: 10px;
+#timeline svg {
+    margin: 0 0 10px 10px;
 }
 
-#barchart {
-    margin-bottom: 10px;
+#barchart svg {
+    margin: 0 0 10px;
 }
 
-.axis {
+#controls .axis {
   font: 9px sans-serif;
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
 }
 
-.axis .domain {
+#controls .axis .domain {
   fill: none;
   stroke: #000;
   stroke-opacity: .3;
@@ -86,7 +86,7 @@ div.tooltip {
   stroke-linecap: round;
 }
 
-.axis .halo {
+#controls .axis .halo {
   fill: none;
   stroke: #ddd;
   stroke-width: 8px;
@@ -101,11 +101,14 @@ div.tooltip {
 /*  cursor: crosshair;*/
 }
 
-#start{
+#start {
     width: 100px;
     height: 30px;
     position: relative;
     margin-left: 35px;
+    background-color: skyblue;
+    border-radius: 5px;
+    box-shadow: none;
 }
 
 .text {
@@ -113,6 +116,25 @@ div.tooltip {
 
 }
 
-#controls-heading{
-    font-size: 20px;
+.axis {
+  font: 9px sans-serif;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
+
+ .axis .domain {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .3;
+  stroke-width: 3px;
+  stroke-linecap: round;
+}
+
+.axis .halo {
+  fill: none;
+  stroke: #ddd;
+  stroke-width: 8px;
+  stroke-linecap: round;
+}
+
