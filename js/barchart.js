@@ -3,7 +3,7 @@ BarChart = function(_parentElement){
   this.displayData = [{"val": 0, "type": "S"}, {"val": 0, "type": "I"}, {"val": 0, "type": "R"}];
 
   this.margin = {top: 20, right: 30, bottom: 30, left: 30};
-  this.width = 600 - this.margin.left - this.margin.right;
+  this.width = 500 - this.margin.left - this.margin.right;
   this.height = 200 - this.margin.top - this.margin.bottom;
 
   this.domain = ["S", "I", "R"]
