@@ -97,8 +97,9 @@ function launchModel (geocode, lat, lng) {
   // Click location is site of first Zombie
   var starter_block = infectBlockCountry(lat, lng, country, origin, origin)
   origin += 100;
+  d3.select("#originBox").text(lat.toFixed(2) + ", " + lng.toFixed(2));
 
-  runAnimation();
+  $("#start").prop("disabled", false);
 }
 
 var animation_interval;

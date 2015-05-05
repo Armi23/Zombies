@@ -212,19 +212,21 @@ function brushed_r() {
 
 var text_latlong = control_svg.append("text")
     .attr("class", "text")
-    .text("Start Lat. and Long.: ")
+    .text("Point of Origin: ")
     .attr("x", "0")
     .attr("y", "242");
 
 var text_latlong = control_svg.append("text")
     .attr("class", "text")
-    .text("PUT LAT LONG HERE ARMI ")
+    .text("Select a point")
     .attr("x", "0")
-    .attr("y", "266");
+    .attr("y", "266")
+    .attr("id", "originBox");
 
 $("#controls").append($("<input>").attr("type","submit").attr("value","Start").attr("id","start"));
 
 var playing = false;
+$("#start").prop("disabled", true);
 $("#start").click(function(){
   if (!playing) {
     runAnimation();
@@ -233,4 +235,4 @@ $("#start").click(function(){
     playing = false;
     $("#start").prop("value", "Play");
   }
-})
+});
