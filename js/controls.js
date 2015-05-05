@@ -40,7 +40,7 @@ var slider_s = control_svg.append("g")
 
 var text_s = control_svg.append("text")
     .attr("class", "text")
-    .text("Define variable S: ")
+    .text("Define Beta: ")
     .attr("x", "0")
     .attr("y", "25");
 
@@ -73,7 +73,6 @@ function brushed_s() {
   handle_s.attr("cx", x(value_s));
 //  d3.select("body").style("background-color", d3.hsl(value, .8, .8));
     
-    console.log("Sliding S: ", value_s);
     beta = value_s;
 }
 
@@ -105,7 +104,7 @@ var slider_i = control_svg.append("g")
 
 var text_i = control_svg.append("text")
     .attr("class", "text")
-    .text("Define variable I: ")
+    .text("Define the kill rate: ")
     .attr("x", "0")
     .attr("y", "100");
 
