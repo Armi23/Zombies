@@ -19,8 +19,8 @@ function infectBlockCallback (geocode, lat, lng, options) {
 function infectBlockCountry (lat, lng, country, x_index, y_index) {
   var people_density = densities[country];
   var block = {"S": people_density * dim * dim - 1, 
-      "I": 1, 
-      "R": 0, 
+      "I": 1.0, 
+      "R": 0.0, 
       "lat": lat, 
       "lng": lng, 
       "x": x_index, 
@@ -55,7 +55,7 @@ function SIR (j) {
   N = S + I + R;
 
   block.S -= beta * S * I;
-  block.I += (beta - kill) * S * I ;
+  block.I += (beta - kill) * S * I;
   block.R += kill * S * I;
 
   block.S = Math.max(0, block.S);
@@ -139,7 +139,7 @@ function vulnerable_neighbors (x, y) {
 function spread () {
 
   // Select number of zombies that will spread. Limited by Google Maps API
-  spreading_zombies = Math.floor(Math.random() * 10);
+  spreading_zombies = Math.floor(Math.random() * 3);
   for (var i = 0; i < spreading_zombies; i++) {
 
     // Select a block to spread from

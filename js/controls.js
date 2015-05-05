@@ -227,10 +227,19 @@ var playing = false;
 $("#start").prop("disabled", true);
 $("#start").click(function(){
   if (!playing) {
-    runAnimation();
+    play();
   } else {
-    clearInterval(animation_interval)
-    playing = false;
-    $("#start").prop("value", "Play");
+    pause();
   }
 });
+
+function play () {
+  runAnimation();
+}
+
+function pause () {
+  clearInterval(animation_interval)
+  playing = false;
+  $("#start").prop("value", "Play");
+
+}
