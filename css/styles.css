@@ -68,7 +68,7 @@ div.tooltip {
 }
 
 #barchart svg {
-    margin: 0 0 10px;
+    margin: 0 0 10px 0;
 }
 
 #controls .axis {
@@ -138,3 +138,6 @@ div.tooltip {
   stroke-linecap: round;
 }
 
+#barchart .y.label, #timeline .y.label{
+    font-size: 0.6em;
+}

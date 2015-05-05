@@ -47,6 +47,21 @@ TimeVis.prototype.initVis = function(){
     .attr("y", 6)
     .attr("dy", ".71em")
   
+  this.svg.append("text")
+    .attr("class", "x label")
+    .attr("text-anchor", "end")
+    .attr("x", this.width)
+    .attr("y", this.height - 6)
+    .text("Time");
+    
+    this.svg.append("text")
+    .attr("class", "y label")
+    .attr("text-anchor", "end")
+    .attr("y", 6)
+    .attr("dy", ".25em")
+    .attr("transform", "rotate(-90)")
+    .text("Number of People/global");
+  
   
   this.svg.append("text")
     .attr("class", "text")
@@ -60,7 +75,8 @@ TimeVis.prototype.initVis = function(){
 
   this.yAxis = d3.svg.axis()
     .scale(that.y)
-    .orient("left");
+    .orient("left")
+    .tickFormat(d3.format("s"));
 
   // updates axis
   this.svg.select(".x.axis")
