@@ -74,6 +74,7 @@ function brushed_s() {
 //  d3.select("body").style("background-color", d3.hsl(value, .8, .8));
     
     console.log("Sliding S: ", value_s);
+    beta = value_s;
 }
 
 
@@ -138,6 +139,7 @@ function brushed_i() {
 //  d3.select("body").style("background-color", d3.hsl(value, .8, .8));
     
     console.log("Sliding I: ", value_i);
+    kill = value_i;
 }
 
 
@@ -202,6 +204,7 @@ function brushed_r() {
 //  d3.select("body").style("background-color", d3.hsl(value, .8, .8));
     
     console.log("Sliding R: ", value_r);
+    stepLimit = value_r * 1000;
 }
 
 $("#controls").append($("<input>").attr("type","submit").attr("value","Start").attr("id","start"));
