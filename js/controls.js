@@ -141,7 +141,6 @@ function brushed_i() {
   handle_i.attr("cx", x(value_i));
 //  d3.select("body").style("background-color", d3.hsl(value, .8, .8));
     
-    console.log("Sliding I: ", value_i);
     kill = value_i;
 }
 
@@ -206,7 +205,6 @@ function brushed_r() {
   handle_r.attr("cx", x(value_r));
 //  d3.select("body").style("background-color", d3.hsl(value, .8, .8));
     
-    console.log("Sliding R: ", value_r);
     stepLimit = value_r * 1000;
 }
 

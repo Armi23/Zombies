@@ -35,9 +35,10 @@ BarChart.prototype.initVis = function(){
     
   this.svg.append("text")
     .attr("class", "text")
-    .text("SIR Bar Chart for <INSERT country name here>")
+    .text("Hover Over Country")
     .attr("x", "20")
-    .attr("y", "0");
+    .attr("y", "0")
+    .attr("id", "barTitle");
 
   this.svg.append("g")
     .attr("class", "x axis")
@@ -87,6 +88,8 @@ BarChart.prototype.updateData = function(data, bar_country){
   if (data == undefined) {
     data = {"S": 0, "I": 0, "R": 0};
   }
+
+  d3.select("#barTitle").text(bar_country)
 
   this.displayData[0].val = data.S;
   this.displayData[1].val = data.I;
