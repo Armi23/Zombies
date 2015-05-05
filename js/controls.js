@@ -2,8 +2,12 @@
 
 
 var c_width = 200;
-var c_height = 240;
+var c_height = 275;
 var margin = 40;
+var pos1 = 6;
+var pos2 = 2.35;
+var pos3 = 1.45;
+var pos4 = 6;
 
 var x = d3.scale.linear()
     .domain([0, 1])
@@ -21,7 +25,7 @@ var control_svg = d3.select("#controls").append("svg")
 
 control_svg.append("g")
     .attr("class", "x axis")
-    .attr("transform", "translate(0," + c_height / 5 + ")")
+    .attr("transform", "translate(0," + c_height / pos1 + ")")
     .call(d3.svg.axis()
       .scale(x)
       .orient("bottom")
@@ -52,7 +56,7 @@ slider_s.selectAll(".extent,.resize")
 
 var handle_s = slider_s.append("circle")
     .attr("class", "handle")
-    .attr("transform", "translate(0," + c_height / 5 + ")")
+    .attr("transform", "translate(0," + c_height / pos1 + ")")
     .attr("r", 9);
 
 slider_s
@@ -87,7 +91,7 @@ var brush_i = d3.svg.brush()
 
 control_svg.append("g")
     .attr("class", "x axis")
-    .attr("transform", "translate(0," + c_height / 2 + ")")
+    .attr("transform", "translate(0," + c_height / pos2 + ")")
     .call(d3.svg.axis()
       .scale(x)
       .orient("bottom")
@@ -116,7 +120,7 @@ slider_i.selectAll(".extent,.resize")
 
 var handle_i = slider_i.append("circle")
     .attr("class", "handle")
-    .attr("transform", "translate(0," + c_height / 2 + ")")
+    .attr("transform", "translate(0," + c_height / pos2 + ")")
     .attr("r", 9);
 
 slider_i
@@ -151,7 +155,7 @@ var brush_r = d3.svg.brush()
 
 control_svg.append("g")
     .attr("class", "x axis")
-    .attr("transform", "translate(0," + c_height / 1.2 + ")")
+    .attr("transform", "translate(0," + c_height / pos3 + ")")
     .call(d3.svg.axis()
       .scale(x)
       .orient("bottom")
@@ -181,7 +185,7 @@ slider_r.selectAll(".extent,.resize")
 
 var handle_r = slider_r.append("circle")
     .attr("class", "handle")
-    .attr("transform", "translate(0," + c_height / 1.2 + ")")
+    .attr("transform", "translate(0," + c_height / pos3 + ")")
     .attr("r", 9);
 
 slider_r
@@ -205,6 +209,18 @@ function brushed_r() {
     console.log("Sliding R: ", value_r);
     stepLimit = value_r * 1000;
 }
+
+var text_latlong = control_svg.append("text")
+    .attr("class", "text")
+    .text("Start Lat. and Long.: ")
+    .attr("x", "0")
+    .attr("y", "242");
+
+var text_latlong = control_svg.append("text")
+    .attr("class", "text")
+    .text("PUT LAT LONG HERE ARMI ")
+    .attr("x", "0")
+    .attr("y", "266");
 
 $("#controls").append($("<input>").attr("type","submit").attr("value","Start").attr("id","start"));
 
