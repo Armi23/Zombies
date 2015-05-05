@@ -195,3 +195,12 @@ nav {
   margin: 0 auto;
   display: block;
 }
+
+#zombiegame{
+    width: 1000px;
+    padding: 0 80px;
+}
+
+#gameframe{
+    margin-left: 20px;
+}

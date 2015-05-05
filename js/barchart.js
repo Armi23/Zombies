@@ -187,7 +187,6 @@ BarChart.prototype.updateVis = function(){
 
   bar.exit()
    .remove();
-
 }
 
 // Key for handling data

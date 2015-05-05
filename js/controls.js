@@ -1,6 +1,5 @@
 // This is where we will edit the parameters of the disease. We will have some presets for different diseases but we will also allow users to change these manually
 
-
 var c_width = 200;
 var c_height = 275;
 var margin = 40;
@@ -49,9 +48,6 @@ var text_s = control_svg.append("text")
 slider_s.selectAll(".extent,.resize")
     .remove();
 
-//slider.select(".background")
-//    .attr("height", height);
-
 var handle_s = slider_s.append("circle")
     .attr("class", "handle")
     .attr("transform", "translate(0," + c_height / pos1 + ")")
@@ -59,10 +55,6 @@ var handle_s = slider_s.append("circle")
 
 slider_s
     .call(brush_s.event);
-//  .transition() // gratuitous intro!
-//    .duration(750)
-//    .call(brush.extent([70, 70]))
-//    .call(brush.event);
 
 function brushed_s() {
   var value_s = brush_s.extent()[0];
@@ -73,12 +65,9 @@ function brushed_s() {
   }
 
   handle_s.attr("cx", x(value_s));
-//  d3.select("body").style("background-color", d3.hsl(value, .8, .8));
     
     beta = value_s;
 }
-
-
 
 // i slider
 
@@ -113,9 +102,6 @@ var text_i = control_svg.append("text")
 slider_i.selectAll(".extent,.resize")
     .remove();
 
-//slider.select(".background")
-//    .attr("height", height);
-
 var handle_i = slider_i.append("circle")
     .attr("class", "handle")
     .attr("transform", "translate(0," + c_height / pos2 + ")")
@@ -123,11 +109,6 @@ var handle_i = slider_i.append("circle")
 
 slider_i
     .call(brush_i.event);
-//  .transition() // gratuitous intro!
-//    .duration(750)
-//    .call(brush.extent([70, 70]))
-//    .call(brush.event);
-
 function brushed_i() {
   var value_i = brush_i.extent()[0];
 
@@ -137,9 +118,8 @@ function brushed_i() {
   }
 
   handle_i.attr("cx", x(value_i));
-//  d3.select("body").style("background-color", d3.hsl(value, .8, .8));
     
-    kill = value_i;
+  kill = value_i;
 }
 
 
@@ -177,9 +157,6 @@ var text_r = control_svg.append("text")
 slider_r.selectAll(".extent,.resize")
     .remove();
 
-//slider.select(".background")
-//    .attr("height", height);
-
 var handle_r = slider_r.append("circle")
     .attr("class", "handle")
     .attr("transform", "translate(0," + c_height / pos3 + ")")
@@ -187,10 +164,6 @@ var handle_r = slider_r.append("circle")
 
 slider_r
     .call(brush_r.event);
-//  .transition() // gratuitous intro!
-//    .duration(750)
-//    .call(brush.extent([70, 70]))
-//    .call(brush.event);
 
 function brushed_r() {
   var value_r = brush_r.extent()[0];
@@ -201,9 +174,8 @@ function brushed_r() {
   }
 
   handle_r.attr("cx", x(value_r));
-//  d3.select("body").style("background-color", d3.hsl(value, .8, .8));
     
-    stepLimit = value_r * 1000;
+  stepLimit = value_r * 1000;
 }
 
 var text_latlong = control_svg.append("text")
