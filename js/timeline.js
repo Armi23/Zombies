@@ -46,6 +46,13 @@ TimeVis.prototype.initVis = function(){
     .attr("transform", "rotate(-90)")
     .attr("y", 6)
     .attr("dy", ".71em")
+  
+  
+  this.svg.append("text")
+    .attr("class", "text")
+    .text("Disease progression timeline")
+    .attr("x", "20")
+    .attr("y", "0");
 
   this.xAxis = d3.svg.axis()
     .scale(that.x)

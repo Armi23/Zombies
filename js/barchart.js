@@ -32,6 +32,12 @@ BarChart.prototype.initVis = function(){
 
   this.y = d3.scale.linear()
     .range([this.height, 0]);
+    
+  this.svg.append("text")
+    .attr("class", "text")
+    .text("SIR Bar Chart for <INSERT country name here>")
+    .attr("x", "20")
+    .attr("y", "0");
 
   this.svg.append("g")
     .attr("class", "x axis")
