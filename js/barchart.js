@@ -50,13 +50,6 @@ BarChart.prototype.initVis = function(){
     .attr("transform", "rotate(-90)")
     .attr("y", 6)
     .attr("dy", ".71em")
-  
-//  this.svg.append("text")
-//    .attr("class", "x label")
-//    .attr("text-anchor", "end")
-//    .attr("x", this.width)
-//    .attr("y", this.height)
-//    .text("SIR");
     
     this.svg.append("text")
     .attr("class", "y label")
