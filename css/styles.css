@@ -59,8 +59,8 @@ div.tooltip {
     height: 320px;
     width: 200px;
     margin-top: 20px;
-    color: darkslategray;
-    background-color: lightgrey;
+    color: #002469;
+    background-color: #8db7f8;
 }
 
 #timeline svg {
@@ -90,13 +90,13 @@ div.tooltip {
 
 #controls .axis .halo {
   fill: none;
-  stroke: #ddd;
+  stroke: rgba(192, 221, 255, 0.67);
   stroke-width: 8px;
   stroke-linecap: round;
 }
 
 .slider .handle {
-  fill: #fff;
+  fill: #daeaff;
   stroke: #000;
   stroke-opacity: .5;
   stroke-width: 1.25px;
@@ -108,7 +108,7 @@ div.tooltip {
     height: 30px;
     position: relative;
     margin-left: 35px;
-    background-color: skyblue;
+    background-color: #c1d9ff;
     border-radius: 5px;
     box-shadow: none;
 }
@@ -142,4 +142,56 @@ div.tooltip {
 
 #barchart .y.label, #timeline .y.label{
     font-size: 0.7em;
+}
+
+h1 {
+    text-align: center;
+}
+
+header{
+    background-color: #d6d6d6;
+    height: 130px;
+    padding: 10px 0 0 0;
+    color: #5d5252;
+    margin-bottom: 10px;
+}
+
+header ul {
+  list-style: none;
+}
+header a {
+  color: inherit;
+  display: inline-block;
+  width: 30%;
+  text-align: center;
+  transition: background .2s ease-out;
+  text-decoration: none;
+  
+}
+header a:hover {
+  background-color: #a6b5c4;
+  transition: background .2s ease-in;
+  border-radius: 2em;
+  text-decoration: none;
+  color: inherit;
+}
+
+header a:active {
+    border-radius : 2em;
+}
+
+header a:link {
+    border-radius : 2em;
+}
+
+
+header li {
+  display: inline;
+}
+
+nav {
+  max-width: 1250px;
+  width: 600px;
+  margin: 0 auto;
+  display: block;
 }

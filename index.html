@@ -7,9 +7,18 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
   </head>
   <body>
+    <header>
+        <h1>Pandemic Map</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="#">Youtube</a></li>
+            </ul>
+        </nav>
+    </header>
     <main>
-      <h1>Pandemic Map</h1>
-      <p>Instructions: To map your disease, click on the map to mark your starting point. If your starting point is valid, "Point of Origin" will update with the latitude and longitude. You can adjust the beta parameter (spreading rate) and the kill parameter (zombie death rate) as well as the number of steps the animation should take before it stops. After that, you can click the "Start" button to watch the Zombies take over the world.
+      <p id="instructions">Instructions: To map your disease, click on the map to mark your starting point. If your starting point is valid, "Point of Origin" will update with the latitude and longitude. You can adjust the beta parameter (spreading rate) and the kill parameter (zombie death rate) as well as the number of steps the animation should take before it stops. After that, you can click the "Start" button to watch the Zombies take over the world.
       </p>
       
       <div class="row">
@@ -39,6 +48,7 @@
       <script src="js/controls.js"></script>
       <script src="js/timeline.js"></script>
       <script src="js/geocoder.js"></script>
+      <script src="js/konami.js"></script>
       
       <script>
         $(function(){ 

@@ -56,6 +56,35 @@ BarChart.prototype.initVis = function(){
     .attr("y", 6)
     .attr("dy", ".71em")
     
+    this.svg.append("text")
+    .attr("class", "y label")
+    .attr("text-anchor", "end")
+    .attr("y", 6)
+    .attr("dy", ".25em")
+    .attr("transform", "rotate(-90)")
+    .text("Number of People/Country");
+
+    // Add axes visual elements
+    this.yAxis = d3.svg.axis()
+        .scale(this.y)
+        .orient("left")
+        .tickFormat(d3.format("s"));
+
+    this.xAxis = d3.svg.axis()
+        .scale(this.x)
+        .orient("bottom")
+
+    // Need to reselect axis to update it with d3 svg axis
+    this.svg.select(".x.axis")
+        .call(this.xAxis)
+        .selectAll("text")
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", ".15em")
+        .text(function(d, i) {
+          return that.domain[i]; 
+        })
+    
   // Add label
   this.svg.append("text")
   .attr("class", "y label")
