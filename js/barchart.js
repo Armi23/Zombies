@@ -64,7 +64,7 @@ BarChart.prototype.initVis = function(){
     .attr("y", 6)
     .attr("dy", ".25em")
     .attr("transform", "rotate(-90)")
-    .text("Number of People/country");
+    .text("Number of People/Country");
 
     // Add axes visual elements
     this.yAxis = d3.svg.axis()

@@ -60,7 +60,7 @@ TimeVis.prototype.initVis = function(){
     .attr("y", 6)
     .attr("dy", ".25em")
     .attr("transform", "rotate(-90)")
-    .text("Number of People/global");
+    .text("Number of People/Global");
   
   
   this.svg.append("text")
