@@ -73,12 +73,12 @@ function draw(topo) {
   country
     .on("mousemove", function(d,i) {
 
-      country = d.properties.name
+      var country_name = d.properties.name
       var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
 
       tooltip.classed("hidden", false)
              .attr("style", "left:"+(mouse[0]+offsetL)+"px;top:"+(mouse[1]+offsetT)+"px")
-             .html(country);
+             .html(country_name);
 
       })
       .on("mouseout",  function(d,i) {
@@ -211,12 +211,16 @@ $(function() {
     for (var i = 0; i < csv.length; i++) {
       out_country = csv[i]["Source"]
       migrations[out_country] = {}
+      migrations[out_country]["sum"] = 0
 
       for (var key in csv[i]) {
         migrations[out_country][key] = csv[i][key]
+        var num = parseFloat(csv[i][key])
+        if (!isNaN(num)) {
+          migrations[out_country]["sum"] += num;
+        }
       }
     };
-  // console.log(migrations);
 });
 
 d3.csv("data/area.csv", function(csv) {
@@ -258,7 +262,6 @@ function colorCircle (d, i) {
   if (d.I > d.R) {
     return "#ff0000"
   }
-  console.log("recovery");
   return "#0000ff";
 }
 
