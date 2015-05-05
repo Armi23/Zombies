@@ -74,8 +74,8 @@ TimeVis.prototype.initVis = function(){
 /**
  * Method to wrangle the data. In this case it takes an options object
   */
-TimeVis.prototype.updateData = function(data){
-  this.displayData = data;
+TimeVis.prototype.updateData = function(timeData){
+  this.displayData = timeData;
   this.updateVis();
 }
 

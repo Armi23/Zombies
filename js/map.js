@@ -245,7 +245,9 @@ function processGrid (grid) {
   for (var i in grid) {
     for (var j in grid[i]) {
       var block = grid[i][j];
-      infected += block.I;
+      if (!isNaN(block.I)) {
+        infected += block.I;
+      }
       data.push(block);
       if (!(block.country in country_data)) {
         country_data[block.country] = {"S": 0, "I": 0, "R": 0}
@@ -277,13 +279,9 @@ function mapVis (grid) {
   circles.enter()
           .append("circle")
           .attr("cx", function(d, i) {
-            console.log("Lat: ", d.lat);
-            console.log("Long: ", d.lng);
-            console.log("cx: ", projection([d.lng, d.lat])[0]);
             return projection([d.lng, d.lat])[0];
           })
           .attr("cy", function(d, i) {
-            console.log("cy: ", projection([d.lng, d.lat])[1]);
             return projection([d.lng, d.lat])[1];
           })
           .attr("r", 1)
