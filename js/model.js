@@ -53,7 +53,6 @@ function SIR (j) {
   I = block.I;
   R = block.R;
   N = S + I + R;
-  console.log("Total: ", N);
 
   block.S -= beta * S * I;
   block.I += (beta - kill) * S * I ;
@@ -62,10 +61,6 @@ function SIR (j) {
   block.S = Math.max(0, block.S);
   block.I = Math.max(0, block.I);
   block.R = Math.max(0, block.R);
-
-  console.log("beta", beta);
-  console.log("kill", kill);
-  console.log("Total: ", block.S + block.I + block.R);
 
   if (block.I <= 0) {
     infected_blocks.splice(j, 1);
@@ -199,6 +194,7 @@ function spread () {
       continue;
     }
 
+    console.log("Country", new_country);
     var airport_index = Math.floor(Math.random() * airports[new_country].length);
     var airport = airports[new_country][airport_index];
     infectBlockCountry(airport.lat, airport.lng, new_country, origin, origin);

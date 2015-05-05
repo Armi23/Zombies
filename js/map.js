@@ -73,24 +73,24 @@ function draw(topo) {
   country
     .on("mousemove", function(d,i) {
 
-      var country_name = d.properties.name
+      h_country = d.properties.name
       var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
 
       tooltip.classed("hidden", false)
              .attr("style", "left:"+(mouse[0]+offsetL)+"px;top:"+(mouse[1]+offsetT)+"px")
-             .html(country_name);
+             .html(h_country);
 
+      $(MyEventHandler).trigger("hover", 
+                {
+                  "counts": country_data[h_country],
+                  "country": h_country
+                });
       })
       .on("mouseout",  function(d,i) {
         tooltip.classed("hidden", true);
       })
       .on("mouseover", function(d, i) {
-        h_country = d.properties.name;
-        $(MyEventHandler).trigger("hover", 
-                  {
-                    "counts": country_data[h_country],
-                    "country": h_country
-                  })
+
       });
 }
 
