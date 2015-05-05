@@ -221,13 +221,13 @@ $(function() {
         }
       }
     };
-});
+  });
 
-d3.csv("data/area.csv", function(csv) {
-  for (var i = 0; i < csv.length; i++) {
-    areas[csv[i]["Country Name"]] = csv[i][year]
-  };
-});
+  d3.csv("data/area.csv", function(csv) {
+    for (var i = 0; i < csv.length; i++) {
+      areas[csv[i]["Country Name"]] = csv[i][year]
+    };
+  });
 })
 
 var timeline_data = []
