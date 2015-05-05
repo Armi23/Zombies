@@ -4,6 +4,8 @@ alpha = 0.3
 infected_blocks = []
 not_surrounded = []
 list_of_blocks = {}
+var dim = 20.0
+
 
 function infectBlockCallback (geocode, lat, lng, options) {
   var country = getCountry(geocode);
@@ -12,7 +14,7 @@ function infectBlockCallback (geocode, lat, lng, options) {
 
 function infectBlockCountry (lat, lng, country, x_index, y_index) {
   var people_density = densities[country];
-  var block = {"S": people_density * 100 - 1, 
+  var block = {"S": people_density * dim * dim - 1, 
       "I": 1, 
       "R": 0, 
       "lat": lat, 
@@ -150,22 +152,24 @@ function spread () {
 
 // Get the lat/long of a block in the given direction
 function newLatLng (lat1, lng1, brng) {
-  var lat2 = 0
-  var lng2 = 0
+  var lat2 = lat1
+  var lng2 = lng2
 
   if (brng[0] == "N") {
-    lat2 = lat1 + 10.0 / 111111
+    lat2 = lat1 + dim / 110.574 
   } else if (brng[0] == "S") {
-    lat2 = lat1 - 10.0 / 111111
+    lat2 = lat1 - dim / 110.574 
   }
 
   if (brng[0] == "E" || brng[1] == "E") {
-    lng2 = lng1 + 10.0 / (111111.0 * Math.cos(lat1)) 
+    lng2 = lng1 + dim / (111.320 * Math.cos(lat1)) 
   } else if (brng[0] == "W" || brng[1] == "W") {
-    lng2 = lng1 - 10.0 / (111111.0 * Math.cos(lat1))
+    lng2 = lng1 - dim / (111.320 * Math.cos(lat1))
   }
 
-  return [lat1, lng2]
+  console.log("From: ", lat1, ", ", lng1);
+  console.log("To: ", lat2, ", ", lng2);
+  return [lat2, lng2]
 }
 
 function calculate_Neighbors (x_index, y_index) {
