@@ -6,6 +6,9 @@ not_surrounded = []
 list_of_blocks = {}
 var dim = 20.0
 var origin = 0;
+beta = 0.0;
+kill = 0.0;
+stepLimit = 100;
 
 
 function infectBlockCallback (geocode, lat, lng, options) {
@@ -111,7 +114,7 @@ function runAnimation () {
 
     timesRun += 1
     console.log("Times run: " + timesRun);
-    if (timesRun >= 100) {
+    if (timesRun >= stepLimit) {
       clearInterval(animation_interval);
     }
 
@@ -138,8 +141,7 @@ function vulnerable_neighbors (x, y) {
 // Stochastically have a zombie spread into an uninfected neighboring block
 function spread () {
 
-  // Select number of zombies that will spread
-  // spreading_zombies = Math.floor(Math.random() * not_surrounded.length) + 1;
+  // Select number of zombies that will spread. Limited by Google Maps API
   spreading_zombies = Math.floor(Math.random() * 3);
   for (var i = 0; i < spreading_zombies; i++) {
 
