@@ -77,11 +77,10 @@ BarChart.prototype.initVis = function(){
  * Method to wrangle the data. In this case it takes an options object
  * @param _filterFunction - a function that filters data or "null" if none
  */
-BarChart.prototype.updateData = function(data){
+BarChart.prototype.updateData = function(data, bar_country){
   if (data == undefined) {
     data = {"S": 0, "I": 0, "R": 0};
   }
-
 
   this.displayData[0].val = data.S;
   this.displayData[1].val = data.I;

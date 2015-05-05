@@ -53,18 +53,19 @@ function SIR (j) {
   I = block.I;
   R = block.R;
   N = S + I + R;
+  console.log("Total: ", N);
 
-  block.S -= S * I / N;
-  block.I += (1 - alpha) * S * I / N ;
-  block.R += alpha * S * I / N;
+  block.S -= beta * S * I;
+  block.I += (beta - kill) * S * I ;
+  block.R += kill * S * I;
 
   block.S = Math.max(0, block.S);
   block.I = Math.max(0, block.I);
   block.R = Math.max(0, block.R);
 
-  console.log("S", block.S);
-  console.log("I", block.I);
-  console.log("R", block.R);
+  console.log("beta", beta);
+  console.log("kill", kill);
+  console.log("Total: ", block.S + block.I + block.R);
 
   if (block.I <= 0) {
     infected_blocks.splice(j, 1);

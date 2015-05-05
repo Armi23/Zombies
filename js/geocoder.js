@@ -9,8 +9,14 @@ function requestGeocode(lat, lng, callback, options) {
   var geocoder = new google.maps.Geocoder();
   geocoder.geocode({ 'latLng': latlng }, function (results, status) {
     if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
-      alert("TOO MUCH");
-      return null;
+      console.log("Over Query Limit, waiting on queries");
+
+      clearInterval(animation_interval)
+      playing = false;
+      $("#start").prop("value", "Play");
+      setTimeout(function() {
+        runAnimation();
+      }, 2000);
     } else if (status == google.maps.GeocoderStatus.OK) {
       first = results[0]; // Assume results have same country
       callback(first, lat, lng, options)
