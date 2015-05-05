@@ -64,11 +64,13 @@ div.tooltip {
 }
 
 #timeline svg {
-    margin: 0 0 10px 10px;
+    margin: 0 0 10px 0px;
+    padding-left: 5px;
 }
 
 #barchart svg {
     margin: 0 0 10px 0;
+    padding-left: 5px;
 }
 
 #controls .axis {
@@ -139,5 +141,5 @@ div.tooltip {
 }
 
 #barchart .y.label, #timeline .y.label{
-    font-size: 0.6em;
+    font-size: 0.7em;
 }
