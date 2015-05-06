@@ -1,4 +1,4 @@
-/**
+/*
  *  Bar chart constructor
  */
 BarChart = function(_parentElement){
@@ -15,8 +15,8 @@ BarChart = function(_parentElement){
 }
 
 
-/**
- * Method should be called as soon as data is available.. sets up the SVG and the variables
+/*
+ * Sets up Bar chart visualization
  */
 BarChart.prototype.initVis = function(){
   var that = this; 
@@ -56,7 +56,7 @@ BarChart.prototype.initVis = function(){
     .attr("y", 6)
     .attr("dy", ".71em")
     
-    this.svg.append("text")
+  this.svg.append("text")
     .attr("class", "y label")
     .attr("text-anchor", "end")
     .attr("y", 6)
@@ -64,65 +64,65 @@ BarChart.prototype.initVis = function(){
     .attr("transform", "rotate(-90)")
     .text("Number of People/Country");
 
-    // Add axes visual elements
-    this.yAxis = d3.svg.axis()
-        .scale(this.y)
-        .orient("left")
-        .tickFormat(d3.format("s"));
-
-    this.xAxis = d3.svg.axis()
-        .scale(this.x)
-        .orient("bottom")
-
-    // Need to reselect axis to update it with d3 svg axis
-    this.svg.select(".x.axis")
-        .call(this.xAxis)
-        .selectAll("text")
-        .style("text-anchor", "end")
-        .attr("dx", "-.8em")
-        .attr("dy", ".15em")
-        .text(function(d, i) {
-          return that.domain[i]; 
-        })
-    
-  // Add label
-  this.svg.append("text")
-  .attr("class", "y label")
-  .attr("text-anchor", "end")
-  .attr("y", 6)
-  .attr("dy", ".25em")
-  .attr("transform", "rotate(-90)")
-  .text("Number of People/Country");
-
   // Add axes visual elements
   this.yAxis = d3.svg.axis()
-      .scale(this.y)
-      .orient("left")
-      .tickFormat(d3.format("s"));
+    .scale(this.y)
+    .orient("left")
+    .tickFormat(d3.format("s"));
 
   this.xAxis = d3.svg.axis()
-      .scale(this.x)
-      .orient("bottom")
+    .scale(this.x)
+    .orient("bottom")
 
   // Need to reselect axis to update it with d3 svg axis
   this.svg.select(".x.axis")
-      .call(this.xAxis)
-      .selectAll("text")
-      .style("text-anchor", "end")
-      .attr("dx", "-.8em")
-      .attr("dy", ".15em")
-      .text(function(d, i) {
-        return that.domain[i]; 
-      })
+    .call(this.xAxis)
+    .selectAll("text")
+    .style("text-anchor", "end")
+    .attr("dx", "-.8em")
+    .attr("dy", ".15em")
+    .text(function(d, i) {
+      return that.domain[i]; 
+    })
+    
+  // Add label
+  this.svg.append("text")
+    .attr("class", "y label")
+    .attr("text-anchor", "end")
+    .attr("y", 6)
+    .attr("dy", ".25em")
+    .attr("transform", "rotate(-90)")
+    .text("Number of People/Country");
+
+  // Add axes visual elements
+  this.yAxis = d3.svg.axis()
+    .scale(this.y)
+    .orient("left")
+    .tickFormat(d3.format("s"));
+
+  this.xAxis = d3.svg.axis()
+    .scale(this.x)
+    .orient("bottom")
+
+  // Need to reselect axis to update it with d3 svg axis
+  this.svg.select(".x.axis")
+    .call(this.xAxis)
+    .selectAll("text")
+    .style("text-anchor", "end")
+    .attr("dx", "-.8em")
+    .attr("dy", ".15em")
+    .text(function(d, i) {
+      return that.domain[i]; 
+    })
   
   this.svg.select(".y.axis")
-      .call(this.yAxis)
+    .call(this.yAxis)
 
 }
 
 
-/**
- * Called by event handler to update data in chart
+/*
+ * Used by event handler to update data
  */
 BarChart.prototype.updateData = function(data, bar_country){
   d3.select("#barTitle").text(bar_country); // Update title
@@ -138,7 +138,7 @@ BarChart.prototype.updateData = function(data, bar_country){
 }
 
 
-/**
+/*
  * Change bar chart
  */
 BarChart.prototype.updateVis = function(){

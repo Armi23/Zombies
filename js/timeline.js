@@ -1,3 +1,6 @@
+/*
+ * Contains code for making timeline visualization
+ */
 TimeVis = function(_parentElement, _eventHandler){
   this.parentElement = _parentElement;
   this.eventHandler = _eventHandler;
@@ -11,8 +14,8 @@ TimeVis = function(_parentElement, _eventHandler){
 }
 
 
-/**
- * Method that sets up the SVG and the variables
+/*
+ * Sets up timeline vis 
  */
 TimeVis.prototype.initVis = function(){
   var that = this;
@@ -62,7 +65,6 @@ TimeVis.prototype.initVis = function(){
     .attr("transform", "rotate(-90)")
     .text("Number of People/Global");
   
-  
   this.svg.append("text")
     .attr("class", "text")
     .text("Disease progression timeline")
@@ -87,17 +89,16 @@ TimeVis.prototype.initVis = function(){
 
 }
 
-/**
- * Method to wrangle the data. In this case it takes an options object
-  */
+/*
+ * Called by event handler to update data
+ */
 TimeVis.prototype.updateData = function(timeData){
   this.displayData = timeData;
   this.updateVis();
 }
 
-/**
- * the drawing function - should use the D3 selection, enter, exit
- * @param _options -- only needed if different kinds of updates are needed
+/*
+ * Changes visualization based on new data
  */
 TimeVis.prototype.updateVis = function(){
 	var that = this;
