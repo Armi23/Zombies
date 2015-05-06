@@ -18,7 +18,7 @@
         </nav>
     </header>
     <main>
-      <p id="instructions">Instructions: To map your disease, click on the map to mark your starting point. If your starting point is valid, "Point of Origin" will update with the latitude and longitude. You can adjust the beta parameter (spreading rate) and the kill parameter (zombie death rate) as well as the number of steps the animation should take before it stops. After that, you can click the "Start" button to watch the Zombies take over the world.
+      <p id="instructions">Instructions: To map your disease, click on the map to mark your starting point. If your starting point is valid, "Point of Origin" will update with the latitude and longitude. You can adjust the beta parameter (spreading rate) and the kill parameter (zombie death rate) as well as the number of steps the animation should take before it stops. After that, you can click the "Start" button to watch the Zombies take over the world. The meaning of the colors on the map can be found by clicking here, on <a id="legend" href="#popuplegend">Legend</a>.
       </p>
       
       <div class="row">
@@ -34,6 +34,20 @@
         <div id="barchart" class="col-md-6">
         </div>
       </div>
+      
+      <div id="popuplegend" class="overlay">
+        <div class="popup">
+            <h2>Legend:</h2>
+            <a class="close" href="#">×</a>
+            <div class="content">
+                <ul class='legend-labels'>
+                    <li><span style='background:red;'></span>Infected</li>
+                    <li><span style='background:green;'></span>Susceptible</li>
+                    <li><span style='background:blue;'></span>Dead</li>
+                </ul>
+            </div>
+        </div>
+    </div>
     </main>
     <footer>
       <script src="http://d3js.org/d3.v3.min.js"></script>
