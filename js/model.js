@@ -1,21 +1,24 @@
-// Run SIR Model here within blocks
-R = 6371.0
-alpha = 0.6
-infected_blocks = []
-not_surrounded = []
-list_of_blocks = {}
+// Contains the code for density based SIR model 
+
+// Global data storage
+var infected_blocks = []
+var not_surrounded = []
+var list_of_blocks = {}
 var dim = 20.0
 var origin = 0;
+
+// Global access parameters
 beta = 0.0;
 kill = 0.0;
 stepLimit = 100;
 
-
+// Passed to geocode to filter important info and create blocks
 function infectBlockCallback (geocode, lat, lng, options) {
   var country = getCountry(geocode);
   infectBlockCountry(lat, lng, country, options[0], options[1]);
 }
 
+// Creates the blocks for simulated infection
 function infectBlockCountry (lat, lng, country, x_index, y_index) {
   var people_density = densities[country];
   var block = {"S": people_density * dim * dim - 1, 
@@ -37,6 +40,7 @@ function infectBlockCountry (lat, lng, country, x_index, y_index) {
   list_of_blocks[x_index][y_index] = block;
 }
 
+// Infections a new block in the direction of dir from fromBlock. 
 function infectBlock(fromBlock, dir, options) {
   lat1 = fromBlock.lat
   lng1 = fromBlock.lng
@@ -44,7 +48,7 @@ function infectBlock(fromBlock, dir, options) {
   requestGeocode(new_lat_lng[0], new_lat_lng[1], infectBlockCallback, options)
 };
 
-// Runs one step of the SIR model on the block. Just returns on ocean block
+// Runs one step of the SIR model on the block j
 function SIR (j) {
   coord = infected_blocks[j]
   block = list_of_blocks[coord[0]][coord[1]]
@@ -67,6 +71,7 @@ function SIR (j) {
   }
 }
 
+// Filters out country from geocode information
 function getCountry (geocode) {
   // Iterate through properties of result to find country
   var comp = "address_components"; // Key to parse out country names
@@ -87,16 +92,17 @@ function getCountry (geocode) {
 // Start the infection from this point
 function launchModel (geocode, lat, lng) {
 
-  var country = getCountry(geocode)
-
   // Click location is site of first Zombie
+  var country = getCountry(geocode)
   var starter_block = infectBlockCountry(lat, lng, country, origin, origin)
   origin += 100;
   d3.select("#originBox").text(lat.toFixed(2) + ", " + lng.toFixed(2));
 
+  // Enable start button
   $("#start").prop("disabled", false);
 }
 
+// Runs simulation
 var animation_interval;
 function runAnimation () {
   var timesRun = 0
@@ -135,7 +141,7 @@ function vulnerable_neighbors (x, y) {
   return vulnerable;
 }
 
-// Stochastically have a zombie spread into an uninfected neighboring block
+// Stochastically have a zombie spread into new places
 function spread () {
 
   // Select number of zombies that will spread. Limited by Google Maps API
@@ -221,6 +227,7 @@ function newLatLng (lat1, lng1, brng) {
   return [lat2, lng2]
 }
 
+// Get list of neighbors around a block
 function calculate_Neighbors (x_index, y_index) {
   return [
     [x_index - 1, y_index + 1, "NW"],
