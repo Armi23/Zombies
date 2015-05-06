@@ -1,3 +1,5 @@
+project URL - [armi23.github.io](armi23.github.io)
+
 Files:
 
 	index.html - main visualization
@@ -23,6 +25,6 @@ Files:
  		migration.csv - flow of people between countries
  		world-topo-min.json - paths for drawing maps
 
-	project URL - [armi23.github.io](armi23.github.io)
+
 	Instructions for running visualization can be found on project website
 	Zombies - note there are no actual zombies in the repo
