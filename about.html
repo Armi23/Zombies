@@ -17,75 +17,12 @@
             </ul>
         </nav>
     </header>
-    <main>
-      <p id="instructions">Instructions: To map your disease, click on the map to mark your starting point. If your starting point is valid, "Point of Origin" will update with the latitude and longitude. You can adjust the beta parameter (spreading rate) and the kill parameter (zombie death rate) as well as the number of steps the animation should take before it stops. After that, you can click the "Start" button to watch the Zombies take over the world. The meaning of the colors on the map can be found by clicking here, on <a id="legend" href="#popuplegend">Legend</a>.
-      </p>
-      
-      <div class="row">
-        <div class="col-md-9">
-          <div id="container"></div>
-        </div>
-        <div id="controls" class="col-md-3">
-        </div>
-      </div>
-      <div class="row">
-        <div id="timeline" class="col-md-6">
-        </div>
-        <div id="barchart" class="col-md-6">
-        </div>
-      </div>
-      
-      <div id="popuplegend" class="overlay">
-        <div class="popup">
-            <h2>Legend:</h2>
-            <a class="close" href="#">×</a>
-            <div class="content">
-                <ul class='legend-labels'>
-                    <li><span style='background:red;'></span>Infected</li>
-                    <li><span style='background:green;'></span>Susceptible</li>
-                    <li><span style='background:blue;'></span>Dead</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    </main>
-    <footer>
-      <script src="http://d3js.org/d3.v3.min.js"></script>
-      <script src="http://d3js.org/topojson.v1.min.js"></script>
-      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-      <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
-      <script src="libs/jquery-2.1.1.min.js"></script>
-      <script src="js/model.js"></script>
-      <script src="js/map.js"></script>
-      <script src="js/barchart.js"></script>
-      <script src="js/controls.js"></script>
-      <script src="js/timeline.js"></script>
-      <script src="js/geocoder.js"></script>
-      <script src="js/konami.js"></script>
-      
-      <script>
-        $(function(){ 
-          
-          MyEventHandler = {};
-          var init = function(){
-            
-            var barchart = new BarChart(d3.select("#barchart"));
-            var timeline = new TimeVis(d3.select("#timeline"), MyEventHandler);
-            
-            $(MyEventHandler).bind("timeTick", function(e, data) {
-              timeline.updateData(data["time"]);
-              barchart.updateData(data["counts"], data["country"])
-            });
-
-            $(MyEventHandler).bind("hover", function(e, data) {
-              barchart.updateData(data["counts"], data["country"])
-            });
-          };
-          
-          init();
-        })
-      </script>
-    </footer>
+    <h1>Story</h1>
+    <p>Imagine a world just like our own. In this world one small mistake in a research lab creates a zombie virus. Unfortunately the zombies are very effective at spreading their disease and what is worse is that the virus has an incubation period. Because of this, the virus spreads rapidly across the country and the world. Simply put, there is no stopping the zombies. </p>
+    <p>Or, there might be another world where the exact same thing happens, but this time the infection doesn’t spread as quickly. Its parameter set is different and though it has some initial success it ultimately dies out. </p>
+    <p>Depending on the choices you the user make about the spreading rate and kill rate of this disease, we will see different zombie dynamics. Pick a spot on land, set up the parameters, and hit the start button to see the world slowly over run in the zombie apocalypse. </p>
+    <p>Also, try out the Konami Code to fight back</p>
+    
+    <h1>Average Results</h1> 
   </body>
 </html>
