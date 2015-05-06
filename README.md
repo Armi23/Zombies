@@ -1,6 +1,9 @@
 Files:
+
 	index.html - main visualization
+
 	about.html - Story and summary of results
+
 	js/
 		barchart.js - Creates barchart visualization
 		controls.js - Creates control panel
